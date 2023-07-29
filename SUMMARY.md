@@ -6,6 +6,6 @@
   * [🔨 应用场景](introduction/use-cases.md)
   * [📜 白皮书](introduction/whitepaper.md)
   * [💬 联络及社交帐号](introduction/contact.md)
-* [🌱 概念](concepts/README.md)
+* [🌱 技术概念](concepts/README.md)
   * [系统架构](concepts/system-arch.md)
   * [区块链架构](concepts/blockchain-arch.md)
