@@ -1,6 +1,6 @@
 # 项目介绍
 
-您好，欢迎来到 **Cumulus Encrypted Storage System**（CESS）的文档。CESS 是 Web3 首个支持大规模商业存储的区块链网络。我们将在本文档中介绍 CESS 的 [愿景和目标](introduction/what-is-cess.md)、[技术亮点](introduction/technical-highlight.md)以及[应用案例](introduction/use-cases.md)。
+您好，欢迎来到 **Cumulus Encrypted Storage System**（CESS）的文档。CESS 是 Web3 首个支持大规模商业存储的区块链网络。我们将在本部份对 CESS 作一个 [概要解说](introduction/what-is-cess.md)，说明其 [技术亮点](introduction/technical-highlight.md) 以及[应用案例](introduction/use-cases.md)。
 
 如果您想深入了解 CESS 的技术细节，我们邀请您阅读 CESS 的[白皮书](introduction/whitepaper.md)。在阅读文档中过程中如果您有任何的疑问，请随时通过 [**以下渠道和我们联系**](introduction/contact.md)。
 
