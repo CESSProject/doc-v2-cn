@@ -1,4 +1,4 @@
-# 💬 联络及社交帐号
+# 💬 联络我们及社交帐号
 
 如果您对 CESS 有任何问题和反馈，欢迎与我们联系。我們也邀請您加入我们充满活力的社区，共同推動 Web3 的发展。
 
@@ -8,7 +8,7 @@
 
 电邮: [**hello@cess.cloud**](mailto:hello@cess.cloud)
 
-## 一起行动
+## 更多互动
 
 👀 [大使计划](https://cess.cloud/ambassador.html)
 

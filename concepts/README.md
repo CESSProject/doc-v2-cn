@@ -1,1 +1,1 @@
-# 🌱 技术概念
+在本部分，我们将介绍 CESS 系统中的关键概念，深入探讨 CESS 的[整体系统架构](system-arch.md)，[CESS 区块链的架构](blockchain-arch.md)，及[回顾区块链核心的基础概念](blockchain-core/README.md)。
