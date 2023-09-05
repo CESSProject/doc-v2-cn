@@ -16,6 +16,6 @@
 
    👉[存储矿工](storage-node/README.md)
 
-5、共识矿工：他们在 CESS 网络中运行 CESS 区块链节点，以保护网络并参与区块链共识过程。
+5. **共识矿工**：他们在 CESS 网络中运行 CESS 区块链节点，以保护网络并参与区块链共识过程。
 
    👉[共识矿工](consensus-node/README.md)
