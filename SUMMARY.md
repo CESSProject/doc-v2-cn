@@ -1,4 +1,4 @@
-# Table of contents
+# 目录
 
 * [🗂 项目介绍](README.md)
   * [🧐 CESS 概要](introduction/what-is-cess.md)
@@ -16,15 +16,15 @@
     * [Substrate Runtime](concepts/blockchain-core/substrate-runtime.md)
     * [共识机制](concepts/blockchain-core/consensus.md)
     * [随机性](concepts/blockchain-core/randomness.md)
-    * [👥 智能合约](concepts/blockchain-core/smart-contract.md)
-    * [✨ 数据迁移](concepts/blockchain-core/data-migration.md)
-    * [🔨 链下工作机](concepts/blockchain-core/off-chain-worker.md)
+    * [智能合约](concepts/blockchain-core/smart-contract.md)
+    * [数据迁移](concepts/blockchain-core/data-migration.md)
+    * [链下工作机](concepts/blockchain-core/off-chain-worker.md)
     * [无分叉升级](concepts/blockchain-core/forkless-upgrade.md)
   * [节点类型](concepts/node-roles.md)
 * [👥 生态角色](user-roles.md)
 * [🌏 角色：社区成员](community/README.md)
   * [CESS 全球大使](community/ambassador.md)
   * [代币和治理模型](community/governance.md)
-  * [💻 CESS 钱包账户](community/cess-account.md)
+  * [CESS 钱包账户](community/cess-account.md)
 * [🔥 角色：dApp 用户](user/README.md)
-* [👥 角色：dApp 开发者](developer/README.md)
+* [💻 角色：dApp 开发者](developer/README.md)
