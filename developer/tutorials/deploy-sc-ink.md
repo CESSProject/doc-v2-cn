@@ -1,4 +1,4 @@
-## 准备条件
+# 准备条件
 
 - 安装 **rust** 语言和 **cargo** 。您也可以查看 [官方指南](https://www.rust-lang.org/tools/install) 了解操作详情。
 

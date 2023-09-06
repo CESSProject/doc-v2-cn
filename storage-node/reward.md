@@ -38,20 +38,20 @@ $$\boxed{AvailableReward_k = (RewardOrder_k * 40\%) + \sum_{t=k-60}^{k-1} \cfrac
 
 # 惩罚机制
 
-如果出现以下情况，存储矿工可能会被惩罚，其质押资产将被扣除。惩罚金额取决于 Slashing 类型和存储矿工的总闲置空间和服务空间。有两种 Slashing 类型：Clearance Slashing 和 Proving Slashing。
+如果出现以下情况，存储矿工可能会被惩罚，其质押资产将被扣除。惩罚金额取决于惩罚类型和存储矿工的总闲置空间和服务空间。有两种惩罚类型：証明惩罚 (proving slashes) 和 申報惩罚 (clearance slashes)。
 
-## Proving Slashes
+## 証明惩罚 (Proving Slashes)
 
-存储矿工将收到两次挑战。如果矿工无法通过 TEE Worker 的验证，它将受到 Proving Slashes。
+存储矿工将收到两次挑战。如果矿工无法通过 TEE Worker 的验证，它将受到 証明惩罚。
 
-Slash 算法：
+惩罚算法：
 
 $$\boxed{StorageSpace = IdleSpace + ServiceSpace}$$
 
 $$\boxed{SlashLimit = 1000\text{ \small{CESS/TB}} * StorageSpace\text{ \small{(in TB, round up to integer)}}}$$
 
-这意味着即使存储空间小于1TB，也将计算为1TB。如果闲置空间连续两次未能通过验证，则惩罚金额为 **Slash Limit * 10%**。如果闲置和服役空间都连续两次未能通过验证，则惩罚金额为 **Slash Limit * 25%**。
+这意味着即使存储空间小于 1TB，也将计算为1TB。如果闲置空间连续两次未能通过验证，则惩罚金额为 **惩罚上限 * 10%**。如果闲置和服役空间都连续两次未能通过验证，则惩罚金额为 **惩罚上限 * 25%**。
 
-## Clearance Slashes
+## 申報惩罚 (Clearance Slashes)
 
-如果矿工无法完成存储挑战，它将被惩罚。存储挑战失败一次，扣除 **Slash Limit * 30%**；连续两次失败，**Slash Limit * 50%**；连续第三次失败，扣除 **Slash Limit * 100%**，返还剩余质押金额，并将该节点从存储节点集中删除。
+如果矿工无法完成存储挑战，它将被惩罚。存储挑战失败一次，扣除 **惩罚上限 * 30%**；连续两次失败，**惩罚上限 * 50%**；连续第三次失败，扣除 **惩罚上限 * 100%**，返还剩余质押金额，并将该节点从存储节点集中删除。
