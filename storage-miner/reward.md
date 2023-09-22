@@ -1,6 +1,6 @@
 这是 CESS 的代币经济：
 
-![CESS 代币经济](../assets/storage-node/reward/tokenomics-v1.png)
+![CESS 代币经济](../assets/storage-miner/reward/tokenomics-v1.png)
 
 CESS网络总共发行 100亿代币，其中 **45% 分配给存储矿工作为奖励，10% 分配给共识矿工**。
 

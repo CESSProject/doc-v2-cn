@@ -27,7 +27,7 @@ TEE Worker 基于 [Gramine 库](https://gramineproject.io/)开发，目前仅支
 
 TEE Worker 绑定共识节点，只有用共识节点的账户签名注册交易后才能工作。对硬件性能要求较高，需要 TEE 功能的硬件支持，需要强大的 CPU 才能快速完成打标任务。因此，这虽然成本较高，但也为矿工赚取了更多奖励。
 
-如果您有兴趣运行共识节点，请参阅 [**生态角色：共识矿工**](https://www.notion.so/o/FsIgz09ubmGQUNERT1yp/s/Amt4KS3sOQ22dgD6uOuE/consensus-node)。
+如果您有兴趣运行共识节点，请参阅 [**生态角色：共识矿工**](https://www.notion.so/o/FsIgz09ubmGQUNERT1yp/s/Amt4KS3sOQ22dgD6uOuE/consensus-miner)。
 
 # 存储节点
 
@@ -49,4 +49,4 @@ CESS 网络激励存储节点提供 4TB 及以上磁盘容量，最好采用 SSD
 
 P2P 通信组件基于 [**libp2p**](https://libp2p.io/) 开发，实现存储节点之间形成 P2P 网络。有关详细信息，请参阅 GitHub 存储库 [CESSProject/p2p-go](https://github.com/CESSProject/p2p-go)。
 
-如果您有兴趣运行存储节点，请参阅[**生态角色：存储矿工**](https://www.notion.so/o/FsIgz09ubmGQUNERT1yp/s/Amt4KS3sOQ22dgD6uOuE/storage-node) 部分。
+如果您有兴趣运行存储节点，请参阅[**生态角色：存储矿工**](https://www.notion.so/o/FsIgz09ubmGQUNERT1yp/s/Amt4KS3sOQ22dgD6uOuE/storage-miner) 部分。

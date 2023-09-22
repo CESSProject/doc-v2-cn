@@ -5,7 +5,7 @@
 
   安装过程中，使用 docker 下载 cess 镜像。如果安装 `cess-nodeadm` 时出现如下异常：
 
-  <img alt="Docker 進程問題" src="../assets/storage-node/troubleshooting/docker-daemon-issue.png" width="100%" height="auto" decoding="async" style="max-width: 100%"/>
+  <img alt="Docker 進程問題" src="../assets/storage-miner/troubleshooting/docker-daemon-issue.png" width="100%" height="auto" decoding="async" style="max-width: 100%"/>
 
   确保指令是在 root 权限下或使用 sudo 命令執行。在您的系统上启动 docker：
 
@@ -27,7 +27,7 @@
 
   如果安装时出现如下错误 `cess-nodeadm`：
 
-  <img alt="Docker 庫問題" src="../assets/storage-node/troubleshooting/docker-package-issue.webp" width="100%" height="auto" decoding="async" style="max-width: 100%;" />
+  <img alt="Docker 庫問題" src="../assets/storage-miner/troubleshooting/docker-package-issue.webp" width="100%" height="auto" decoding="async" style="max-width: 100%;" />
 
   尝试使用以下命令删除 Docker：
 
@@ -56,7 +56,7 @@
 
   如果设置 config 时出现如下错误：
 
-  <img alt="CESS 下载镜像失败" src="../assets/storage-node/troubleshooting/cess-image-download-issue.png" width="100%" height="auto" decoding="async" style="max-width: 100%;" />
+  <img alt="CESS 下载镜像失败" src="../assets/storage-miner/troubleshooting/cess-image-download-issue.png" width="100%" height="auto" decoding="async" style="max-width: 100%;" />
 
   确保以 root 权限或使用 `sudo` 命令运行命令。
 
@@ -66,7 +66,7 @@
 <details>
   <summary>无效的配置文件 (config.yaml)</summary>
 
-  <img alt="无效配置" src="../assets/storage-node/troubleshooting/invalid-config-issue.webp" width="100%" height="auto" decoding="async" style="max-width: 100%;" />
+  <img alt="无效配置" src="../assets/storage-miner/troubleshooting/invalid-config-issue.webp" width="100%" height="auto" decoding="async" style="max-width: 100%;" />
 
   删除文件 `/usr/bin/yq`：
 

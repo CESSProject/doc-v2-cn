@@ -9,5 +9,5 @@
 * [社区成员](community/)
 * [存储 (dApp) 用户](user/)
 * [dApp开发者](developer/)
-* [存储节点验证者](storage-node/)
-* [共识节点验证者](consensus-node/)
+* [存储节点验证者](storage-miner/)
+* [共识节点验证者](consensus-miner/)

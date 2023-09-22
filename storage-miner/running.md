@@ -164,7 +164,7 @@ docker logs chain
 
 如下图所示，如果我们在 [CESS 瀏覧器](https://testnet.cess.cloud/) 中看到 “best” 对应的区块高度约为最新高度，则说明本地链节点同步完成。
 
-![CESS 区块链同步完成](../assets/storage-node/running/sync-status.png)
+![CESS 区块链同步完成](../assets/storage-miner/running/sync-status.png)
 
 只有链同步完成后，才能操作其他功能，如增加质押、查看节点状态等。
 
@@ -176,7 +176,7 @@ docker logs bucket
 
 如下图，看到 `/kldr-testnet` 表示网络环境是测试网络，看到 `Connected to the bootstrap node...` 表示有和 bootstrap 节点的连接。
 
-![存储节点日志](../assets/storage-node/running/view-node-log.webp)
+![存储节点日志](../assets/storage-miner/running/view-node-log.webp)
 
 **查看存储桶状态**
 
@@ -186,7 +186,7 @@ cess bucket stat
 
 返回结果示例如下：
 
-![CESS bucket 统计](../assets/storage-node/running/bucket-stat.png)
+![CESS bucket 统计](../assets/storage-miner/running/bucket-stat.png)
 
 上述名称的進一步解釋，请参阅 [术语對照](../glossary.md#storage-miner)。
 
