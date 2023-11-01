@@ -1,26 +1,26 @@
 作为区块链不可或缺的组成部分，交易提供了修改链上存储的信息状态的机制。每个交易历史都会被记录在区块中。交易有以下三种类型：
 
-- 签名交易 (Signed Transaction)
+- 具签名交易 (Signed Transaction)
 - 不具签名交易 (Unsigned Transaction)
 - 原生交易 (Inherent Transaction)
 
-# 签名交易
+# 具签名交易
 
-在 CESS 网络中，签名交易是最常见的交易类型。在发送签名交易请求时，必须附上请求账户的签名。通常，这是通过使用请求账户的私钥对交易内容进行签名来实现的。此外，请求账户还需要支付交易费用。交易费用和其他元素的处理方法取决于程序逻辑。
+在 CESS 网络中，具签名交易是最常见的交易类型。在发送签名交易请求时，必须附上请求账户的签名。通常，这是通过使用请求账户的私钥对交易内容进行签名来实现的。此外，请求账户还需要支付交易费用。交易费用和其他元素的处理方法取决于程序逻辑。
 
-对于签名交易，只有发送方需要支付交易费用。例如，如果您需要将一定数量的代币从您的账户转账给其他人，您可以在[**Balances Pallet**](https://paritytech.github.io/substrate/master/pallet_balances)中调用 [`transfer`](https://paritytech.github.io/substrate/master/pallet_balances/pallet/struct.Pallet.html#method.transfer) 外部函数。由于您的账户发起了这笔交易，您应该使用您的账户私钥对交易进行签名。同时，在发送请求的过程中，您可以选择添加小费，以提高该交易在网络中的处理优先级。
+对于签名交易，只有发送方需要支付交易费用。例如，如果您需要将一定数量的代币从您的账户转账给其他人，您可以在[**Balances 模塊**](https://paritytech.github.io/substrate/master/pallet_balances)中调用 [`transfer`](https://paritytech.github.io/substrate/master/pallet_balances/pallet/struct.Pallet.html#method.transfer) 外部函数。由于您的账户发起了这笔交易，您应该使用您的账户私钥对交易进行签名。同时，在发送请求的过程中，您可以选择添加小费，以提高该交易在网络中的处理优先级。
 
 # 不具签名交易
 
-绝大多数交易都是签名交易。只有少数未签名交易不是由用户发起的，而是通过链下工作程序由网络请求的。
+绝大多数交易都是签名交易。只有少数未签名交易不是由用户发起的，而是通过链下工作機由网络请求的。
 
-未签名交易不会收取任何费用，也不需要请求者的信息。这意味着未签名交易没有经济限制，因此可能会出现垃圾请求或重放攻击。
+不具签名交易不会收取任何费用，也不需要请求者的信息。这意味着不具签名交易没有经济限制，因此可能会出现垃圾请求或重放攻击。
 
-因此，在执行未签名交易之前，必须非常严格地检查。此外，由于未签名交易涉及用户定义的验证过程，它们通常比已签名交易消耗更多资源。
+因此，在执行不具签名交易之前，必须非常严格地检查。此外，由于不具签名交易涉及用户定义的验证过程，它们通常比已签名交易消耗更多资源。
 
-在 CESS 网络中，只有当前轮值的验证者可以发起未签名交易。请求内容需要附带特定账户的签名摘要，以通过 CESS 网络中的用户定义验证。
+在 CESS 网络中，只有当前轮值的验证者可以发起不具签名交易。请求内容需要附带特定账户的签名摘要，以通过 CESS 网络中的用户定义验证。
 
-在 Substrate 框架中还有一个使用未签名交易的模块，即 [`pallet_im_online::pallet::Call::heartbeat`](https://paritytech.github.io/substrate/master/pallet_im_online/pallet/struct.Pallet.html#method.heartbeat) 的調用。此交易允许验证者节点向网络发送消息以确认节点在线状态。对于此交易，Substrate 有严格的验证过程，只允许注册为验证者节点的账户发送该心跳消息。这样的措施确保了网络中验证者节点的可靠性和安全性。
+在 Substrate 框架中还有一个使用不具签名交易的模块，即 [`pallet_im_online::pallet::Call::heartbeat`](https://paritytech.github.io/substrate/master/pallet_im_online/pallet/struct.Pallet.html#method.heartbeat) 的调用。此交易允许验证者节点向网络发送消息以确认节点在线状态。对于此交易，Substrate 有严格的验证过程，只允许注册为验证者节点的账户发送该心跳消息。这样的措施确保了网络中验证者节点的可靠性和安全性。
 
 # 原生交易
 
