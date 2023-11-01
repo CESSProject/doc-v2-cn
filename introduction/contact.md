@@ -24,7 +24,7 @@
 
 <img src="../assets/others/icons/github.png" alt="" data-size="line"> [Github](https://github.com/CESSProject)
 
-<img src="../assets/others/icons/twitter.png" alt="" data-size="line"> [Twitter](https://twitter.com/CESS_Storage)
+<img src="../assets/others/icons/x.png" alt="" data-size="line"> [Twitter](https://twitter.com/CESS_Storage)
 
 <img src="../assets/others/icons/discord.png" alt="" data-size="line"> [Discord](https://discord.gg/cess)
 
