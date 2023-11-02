@@ -1,4 +1,4 @@
-本章节我们将重点介绍一些 CESS 生态中的 dAPP，推荐 dApp 用户进行试用。一般来说，您应先创建一个 [CESS 帐户](../community/cess-account.md) 以方便使用 CESS 上的 dAPP。
+本章节我们将重点介绍一些 CESS 生态中的 dAPP，推荐 dApp 用户进行试用。一般来说，此时你应已经创建一个 [CESS 帐户](../community/cess-account.md) 以方便使用 CESS 上的 dAPP。
 
 # CESS 上的 dApp 应用
 
