@@ -1,12 +1,16 @@
+# 概述
+
+在本教程中，我们将学习如何在 CESS 区块链上部署一个 [**ink!** 智能合约](https://use.ink/)。ink! 是由负责 Polkadot Network 的核心团队 Parity 开发的，并编译为 Wasm 代码进行执行。它支持在 WebAssembly 虚拟机（Wasm VM）中运行，Rust 开发者可以使用他们已经熟悉的开发工具来开发智能合约，不需要再学习新的语言和开发工具。
+
 # 准备条件
 
-- 安装 **rust** 语言和 **cargo** 。您也可以查看 [官方指南](https://www.rust-lang.org/tools/install) 了解操作详情。
+- 安装 **Rust** 语言和 **cargo** 。您也可以查看 [官方指南](https://www.rust-lang.org/tools/install) 了解操作详情。
 
    ```bash
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
    ```
 
-- 接下来，安装 `cargo-contract`，这是一个帮助设置和管理用 ink! 编写的 WebAssembly 智能合约的 CLI 工具。打开 [GitHub 库](https://github.com/paritytech/cargo-contract) 了解更多。
+- 接下来，安装 `cargo-contract`，这是一个帮助设置和管理用 ink! 编写的 WebAssembly 智能合约的 CLI 工具 ([GitHub 库](https://github.com/paritytech/cargo-contract))。
 
    ```bash
    # Install an additional component `rust-src`
@@ -23,7 +27,18 @@
    cargo contract --help
    ```
 
-   这里应该显示本指令的帮助信息。
+   这里应该显示本指令的帮助信息, 类似如下：
+
+   ```
+   Utilities to develop Wasm smart contracts
+
+   Usage: cargo contract <COMMAND>
+
+   Commands:
+     new          Setup and create a new smart contract project
+     build        Compiles the contract, generates metadata, bundles both together in a `<name>.contract` file
+     ...
+   ```
 
 # 创建智能合约
 
@@ -79,7 +94,7 @@ cargo contract build
 - `flipper.json` - 包含合约 ABI 的元数据文件。
 - `flipper.contract` - 捆绑上述两个文件的合约代码。
 
-您还可以使用 `cargo contract build --release` 进行部署，但就目前的情况，部署 debug 版本已经足够了。
+您还可以使用 `cargo contract build --release` 进行部署。这个版本对生成的 Wasm 编译码进行了更多优化，能在 Wasm VM 上更高效的执行起来。但就目前的情况，部署 debug 版本已经足够了。
 
 # 部署智能合约
 
@@ -94,42 +109,42 @@ cargo contract build
    target/debug/cess-node --dev
    ```
 
-   节点开始运行，指令行页面将显示如下内容。
+   节点开始运行，指令行页面将显示如下内容。<br/>
 
    ![CESS 节点指令行](../../assets/developer/tutorials/deploy-sc-ink/cess-node.png)
 
 - 我们将使用 [**Substrate Contracts UI**](https://github.com/paritytech/contracts-ui) 来部署 ink! 智能合约并与其交互。Substrate Contracts UI 是一个由 Parity 开发的 UI 工具。让我们通过以下方式将 Substrate Contracts UI 连接到本地 CESS 节点：
 
-   <https://contracts-ui.substrate.io/?rpc=ws://127.0.0.1:9944>
+   <https://contracts-ui.substrate.io/?rpc=ws://127.0.0.1:9944><br/>
 
    ![Substrate Contract UI](../../assets/developer/tutorials/deploy-sc-ink/substrate-contract-ui.png)
 
-- 单击 **“Upload a new contract”**。
+- 点击 **“Upload a new contract”**。
 
 - 然后在下一页中:
    - 在 *Account* 下拉单中，选择 **alice** 以 Alice 的身份部署合约。
-   - 在 **“Contract Name”** 文字框里把值定为 **Flipper Contract**
+   - 在 *Contract Name* 文字框里把值定为 **Flipper Contract**
    - 在 *Upload Contract Bundle* 中，拖拽或打开文件 **target/ink/flipper.contract**。
 
-   选择正确的合同文件后，您应该会看到合同元数据。然后单击 **Next**。
+   选择正确的合同文件后，您应该会看到合同元数据。然后单击 **Next**。<br/>
 
    ![上传合约包](../../assets/developer/tutorials/deploy-sc-ink/upload-contract-bundle.png)
 
-- CESS 区块链（以及基于 Substrate 的链）处理 ink! 合约与其他 EVM 兼容链的传统方法不同。合约代码上传和实例化分为两个步骤。在 CESS 链中，您能拥有一份智能合约代码副本，却有着多个不同初始配置的该智能合约的实例，从而节省区块链空间并鼓励代码重用。
+- 在这里注意合约代码的上传和实例化是分为两步进行的。在 CESS 链上，你可以拥有一份智能合约代码，而有多个具有不同初始化配置的该智能合约的实例，从而节省区块链空间并鼓励代码重用。例如，多个ERC20代币可以重用相同的合约代码，但具有不同的单位、标志和符号。
 
   在下面这屏幕中，我们将代码上传和合约实例化放在一个步骤中。
 
    - *Deployment Constructor*: 选择 **new(initValue: bool)**
    - *initValue: bool*: 选择 **false**
-   - 其他选项不做变动，点击 **Next**
+   - 其他选项不做变动，点击 **Next**<br/>
 
    ![上传/实例化 01](../../assets/developer/tutorials/deploy-sc-ink/upload-instantiate-01.png)
 
-- 在下一页中，确认一切正常，然后单击 **Upload and Instantiate**。
+- 在下一页中，确认一切正常，然后单击 **Upload and Instantiate**。<br/>
 
    ![上传/实例化 02](../../assets/developer/tutorials/deploy-sc-ink/upload-instantiate-02.png)
 
-- 您已成功完成实例化示例 Flipper 合约，并可以在此页面中与其交互。
+- 您已成功完成实例化示例 Flipper 合约，并可以在此页面中与其交互。<br/>
 
    ![合约实例化成功](../../assets/developer/tutorials/deploy-sc-ink/instantiate-success.png)
 
