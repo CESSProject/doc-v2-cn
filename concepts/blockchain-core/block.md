@@ -20,4 +20,4 @@
 
 **交易**
 
-要了解更多关于区块结构的定义，请点击 [此链接](https://paritytech.github.io/substrate/master/sp_runtime/traits/trait.Block.html) 参阅详情。
+要了解更多关于区块结构的定义，请点击[此链接](https://paritytech.github.io/substrate/master/sp_runtime/traits/trait.Block.html)参阅详情。
