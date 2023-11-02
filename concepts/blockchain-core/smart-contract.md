@@ -5,7 +5,7 @@ CESS 区块链支持两类智能合约：
 
 # 智能合约帐户
 
-[**Contracts Pallet**](https://paritytech.github.io/substrate/master/pallet_contracts) 根据 `Currency` trait 扩展了帐户，以具有智能合约相关功能。 您可使用这些智能合约帐户实例化智能合约并调用其他合约和非合约帐户。
+[智能合约模块](https://paritytech.github.io/substrate/master/pallet_contracts) 根据 `Currency` trait 扩展了帐户，以具有智能合约功能。 您可以使用这些智能合约帐户实例化智能合约并调用其他合约和非合约帐户。
 
 智能合约代码存储在缓存中，可以使用其哈希检索。 此设计使得可以从同一哈希实例化多个智能合约，而无需每次复制代码。
 

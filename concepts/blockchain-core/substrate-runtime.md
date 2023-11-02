@@ -1,20 +1,20 @@
-Runtime 是 substrate 的核心，它包含保存交易状态，执行交易，与外部节点交互的所有业务逻辑。Substrate 框架提供了所有用于区块链开发的组件，因此，基于 substrate 框架的开发者专注于编写runtime 的业务逻辑即可。
+Runtime 是 Substrate 的核心，它包含保存交易状态，执行交易，与外部节点交互的所有业务逻辑。Substrate 框架提供了所有用于区块链开发的组件，因此，基于 Substrate 框架的开发者专注于编写 Runtime 的业务逻辑即可。
 
 # 状态转换 与 Runtime
 
-从最基本的层面上看，每个区块链的本质都是一个账本，记录发生在链上的每一个变化。在 Substrate 中，这些状态变换会在 runtime 记录下来。因为runtime负责这个操作，所以 runtime 有时又被撑为提供状态转换的函数。
+从最基本的层面上看，每个区块链的本质都是一个账本，记录发生在链上的每一个变化。在 Substrate 中，这些状态变换会在 Runtime 记录下来。因为 Runtime 负责这个操作，所以 Runtime 有时又被描述为提供状态转换的函数。
 
 ![Runtime 状态转换函数](../../assets/concepts/blockchain-core/runtime-stf.png)
 
-在执行过程中，runtime 判断交易的有效和无效，以及链状态该如何根据交易结果进行转变。
+在执行过程中，Runtime 判断哪些为有效或无效的交易，以及链状态该如何根据交易结果进行转变。
 
 # Runtime 接口
 
 ![Substrate 接口](../../assets/concepts/blockchain-core/substrate-node.avif)
 
-外部节点负责处理节点发现、交易池、交易广播、共识，并响应来自外部世界的 RPC 调用。这些任务经常需要外部节点查询 runtime 以获取信息或向 runtime 提供信息。runtime API 促进了外部节点和 runtime 之间的这种通信。
+外部节点负责处理节点发现、交易池、交易广播、共识，并响应来自外部世界的 RPC 调用。这些任务经常需要外部节点查询 Runtime 以获取信息或向 Runtime 提供信息。Runtime API 促进了外部节点和 Runtime 之间的这种通信。
 
-在 Substrate 中，`sp_api` crate 提供了一个接口来实现 runtime API。它旨在通过 [`impl_runtime_apis`](https://paritytech.github.io/substrate/master/sp_api/macro.impl_runtime_apis.html) 宏为您定义自己的自定义接口提供灵活性。然而，每个 runtime 都必须实现 [`Core`](https://paritytech.github.io/substrate/master/sp_api/trait.Core.html) 和 [`Metadata`](https://paritytech.github.io/substrate/master/sp_api/trait.Metadata.html) 接口。除了这些必需的接口外，大多数 Substrate 节点 (如 Substrate Node Template) 实现以下 runtime 接口：
+在 Substrate 中，`sp_api` crate 提供了一个接口来实现 runtime API。它旨在通过 [`impl_runtime_apis`](https://paritytech.github.io/substrate/master/sp_api/macro.impl_runtime_apis.html) 宏为您定义自己的自定义接口提供灵活性。然而，每个 runtime 都必须实现 [`Core`](https://paritytech.github.io/substrate/master/sp_api/trait.Core.html) 和 [`Metadata`](https://paritytech.github.io/substrate/master/sp_api/trait.Metadata.html) 接口。除了这些必需的接口外，大多数 Substrate 节点，如 Substrate Node Template，也实现以下 Runtime 接口：
 
 - [`BlockBuilder`](https://paritytech.github.io/substrate/master/sp_block_builder/trait.BlockBuilder.html)，用于构建块所需的功能。
 - [`TaggedTransactionQueue`](https://paritytech.github.io/substrate/master/sp_transaction_pool/runtime_api/trait.TaggedTransactionQueue.html)，用于验证交易。
@@ -28,7 +28,7 @@ Runtime 是 substrate 的核心，它包含保存交易状态，执行交易，�
 
 # 核心基础类型 (Core Primitives)
 
-Substrate 定义了 runtime 必须实现的核心基础类型（core primitives）。Substrate 框架对 runtime 需要向 Substrate 的其他层提供哪些内容做了最少的假设。但是，有几个数据类型必须被定义，并且必须满足特定的接口以在 Substrate 框架内运作。
+Substrate 也定义了 Runtime 必须实现的核心基础类型（core primitives）。它不对你的 Runtime 作太多的假设。然而，还是有一些数据类型必须由开发者来定义，并且必须满足特定的接口才能在 Substrate 框架内工作。
 
 这些核心类型包括：
 
@@ -40,11 +40,11 @@ Substrate 定义了 runtime 必须实现的核心基础类型（core primitives�
 - `Block`: 本质上就是 Header 和一系列 Extrinsic 的组合，以及要使用的哈希算法的规范。
 - `BlockNumber`: 一种类型，用于编码任何有效块具有的祖先总数。通常是 32 位的数量。
 
-# 添加 Pallet 致 Runtime 中
+# 添加 Pallet 至 Runtime 中
 
-开发人员可以自定义构建 pallet，实现自己所需的功能，当前 Substrate 框架提供了许多的预设 pallets，例如 [**System Pallet**](https://paritytech.github.io/substrate/master/frame_system)、[**Support Pallet**](https://paritytech.github.io/substrate/master/frame_support) 等基础 pallet，还有一些扩展功能性的 pallet，如支持智能合约的 [**Contracts Pallet**](https://paritytech.github.io/substrate/master/pallet_contracts)，管理帐户余额的 [**Balances Pallet**](https://paritytech.github.io/substrate/master/pallet_balances) 等。
+开发人员可以自定义构建 pallet，实现自己所需的功能，当前 Substrate 框架提供了许多的预设模块 (pallets)，例如 [**System Pallet**](https://paritytech.github.io/substrate/master/frame_system)、[**Support Pallet**](https://paritytech.github.io/substrate/master/frame_support) 等基础 模块，还有一些扩展功能性的模块，如支持智能合约的 [**Contracts Pallet**](https://paritytech.github.io/substrate/master/pallet_contracts)，管理帐户余额的 [**Balances Pallet**](https://paritytech.github.io/substrate/master/pallet_balances) 等。
 
-将自定义的 pallet、或预设的 pallet 添加至runtime [`construct_runtime!`](https://paritytech.github.io/substrate/master/frame_support/macro.construct_runtime.html) 宏中：
+将自定义或预设的模块添加至 Runtime [`construct_runtime!`](https://paritytech.github.io/substrate/master/frame_support/macro.construct_runtime.html) 宏中：
 
 ```rust
 construct_runtime!(
@@ -72,15 +72,17 @@ construct_runtime!(
 )
 ```
 
-CESS 网络的模块是从第 60 号索引开始。
+CESS 网络的模块是从第 60 号索引值开始。
 
-分别作用為：
+分别为：
 
-- `FileBank`：管理网络中文件的元信息，包括 `idle`、`active` 這两种文件類型。
+- `FileBank`：管理网络中文件的元信息，包括 `idle`、`active` 这两种文件类型。
 - `TEEWorker`：TEEWorker 是 CESS 网络中的组件之一，具备可信环境，负责计算文件 tag 和执行验证工作。该 pallet 负责管理 TEEWorker 的信息。
-- `Audit`：這模塊用於检查网络中的文件是否正确的被存储，随机时间发起挑战，收集存储证明并对存储证明的验证任务分配，对验证结果进行处理。
+- `Audit`：这模块用于检查网络中的文件是否正确的被存储，随机时间发起挑战，收集存储证明并对存储证明的验证任务分配，对验证结果进行处理。
 - `Sminer`：存储节点是 CESS 网络中的角色之一，用于存储用户的数据，为网络提供存储算力。该pallet负责管理存储节点的信息，以及对其进行奖励或惩罚。
 - `StorageHandler`：管理网络的存储算力，更新信息。存储着网络当前的总闲置空间、总服役空间、以及被用户购买的空间。并且提供交易接口，用于用户购买、续租、扩容空间。并通过 `Hooks` 让用户查询存储空间资讯。
 - `SchedulerCredit`：TEEWorker 的信誉积分模块，为其他 pallets 提供增减 TEEWorker 信誉分的接口。
 - `Oss`：**DeOSS** 是 CESS 网络的组件之一，用于为用户提供便捷的上传数据服务。该 pallet 负责管理 DeOSS 的相关信息及提供用户授权或取消授权的外部接口。单击此处了解有关 [DeOSS 服务](../../developer/guides/deoss.md) 的更多信息。
 - `Cacher`：管理缓存矿工的信息，以及其相关的缓存订单。
+
+更详细的内容可到 [dApp 开发者文档](../../developer/guides/src-overview.md) 细阅。
