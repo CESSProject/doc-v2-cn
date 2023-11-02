@@ -449,7 +449,7 @@ function Main() {
 
     至此，前端应该显示 “Proof of Existence Ink! dApp” 这一行。
 
-3. 从现在开始，我们将主要关注在文件 `src/ProofOfExistenceInk.js`。我们不会在这里逐行添加代码，但我们會介绍 **useink** 库提供的 API，以方便與 ink！智能合约交互。
+3. 从现在开始，我们将主要关注在文件 `src/ProofOfExistenceInk.js`。我们不会在这里逐行添加代码，但我们会介绍 **useink** 库提供的 API，以方便与 ink！智能合约交互。
 
     参考代码：[`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceInk.js)
 
@@ -466,7 +466,7 @@ function Main() {
     </UseInkProvider>
     ```
 
-    `UseInkProvider` context Hook 提供 ink！与其子组件的合约连接信息。配置对需要以下參數：
+    `UseInkProvider` context Hook 提供 ink！与其子组件的合约连接信息。配置对需要以下参数：
 
     - `chains.id`: 存在具有知名 ID 的公链。当我们连接到本地开发链时，我们将其设置为 `custom`。
     - `chain.name`: 链的名称。提示钱包连接时会显示。
@@ -474,7 +474,7 @@ function Main() {
 
     透过 `UseInkProvider`，我们可以在 `<ProofOfExistenceInk />` 组件内调用 ink! 的 API 函数。
 
-5. Looking at the code inside [`function ProofOfExistenceInk(props) {...}`](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L31)
+5. 在 [`function ProofOfExistenceInk(props) {...}`](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L31) 代码中来看：
 
     ```jsx
     // NOTE: In `examples/poe-ink/contract` directory, compile your contract with
@@ -498,22 +498,22 @@ function Main() {
     }
     ```
 
-    - Use `useWallet()` to get the current smart-contract connecting account.
-    - Use `useBalance(account)` to get the account's current balance.
-    - Use `useContract(CONTRACT_ADDR, metadata, "custom")` to get the contract ABI.
-        - The contract address `CONTRACT_ADDR` is specified in the same file above. So, every time a new PoE contract is deployed, we need to update the address value assigned here.
-        - `metadata` is specified above as well. It comes from the metadata json file when we `cargo contract build` our smart contract.
-        - `custom` is the chain ID where the contract is deployed.
+    - 用 `useWallet()` 获取当前智能合约连接账户。
+    - 用 `useBalance(account)` 获取帐户的当前余额。
+    - 用 `useContract(CONTRACT_ADDR, metadata, "custom")` 获取合同 ABI。
+        - 合约地址 `CONTRACT_ADDR` 也是指定在档案里。因此，每次部署新的 PoE 合约时，我们都需要更新分配的地址值；
+        - `metadata` 也以在上述代码中指定了，其来自我们 `cargo contract build` 智能合约时的元数据 json 文件；
+        - `custom` 是部署合约的链 ID。
 
-        At this point, we have a contract instance `poeContract` that we can interact with.
+        至址, 我们就有了一个 `poeContract` 可以与之交互的合约实例。
 
-    - We then use `useCallSubscription()` to subscribe to the value returning from `ownedFiles()` function from the smart contract. Recall from the previous section that this function returns all the file hash digests the user account owned.
+    - 然后，我们使用智能合约函数 `useCallSubscription()` 订阅通过 `ownedFiles()` 功能从智能合约中返回的值。回忆上一节里，我们介绍过该函数用于返回用户帐户拥有的所有文件哈希摘要。
 
-    - Then we use `pickDecoded()` method to decode the result, converting from the chain data types to javascript data types.
+    - 我们使用 `pickDecoded()` 方法解码那结果，将链数据类型转换为 javascript 数据类型。
 
-    All the functions mentioned here are provided by **useink**. You can learn more about their usage in [**ink! documentation**](https://use.ink/frontend/hooks).
+    这里提到的所有功能都是由 **useink** 库提供的。详细可参看 [**ink! 文档**](https://use.ink/frontend/hooks).
 
-6. Here, we specify how the file hash digest is computed.
+6. 接着我们来介绍如何计算文件哈希摘要。
 
     ```jsx
     const computeFileHash = (file) => {
@@ -526,37 +526,37 @@ function Main() {
       fileReader.readAsArrayBuffer(file);
     };
     ```
+    我们使用[`FileReader`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader) 现代浏览器都有提供的 JS API 来读取上传的文件，提取前 64 kB，并使用 [**@polkadot/util-crypto**](https://polkadot.js.org/docs/util-crypto/examples/hash-data) 库提供的 `blake2AsHex()` [Blake2 加密哈希函数](https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2) 来计算其哈希摘要。
 
-    We use [`FileReader`](https://developer.mozilla.org/en-US/docs/Web/API/FileReader) provided in modern-day browser JS APIs to read the uploaded file, extract the first 64 kB, and use `blake2AsHex()` [Blake2 cryptographic hash function](https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2) to calculate its hash digest provided by [**@polkadot/util-crypto**](https://polkadot.js.org/docs/util-crypto/examples/hash-data) library.
+7. 然后，我们还扩展了一些辅助组件 **TxButton**、**ConnectWallet** 和 **WalletSwitcher** 来展示 UI。
 
-7. We then implement a few helper components **TxButton**, **ConnectWallet**, and **WalletSwitcher** to display the UI.
+    - **TxButton** 组件根据用户是否拥有该文件向链发送 `claim()` 或 `forfeit()` 交易。通过使用 `useTx()` 构建交易，然后使用 `signAndSend()` 来发送交易。
 
-    - **TxButton** component sends either `claim()` or `forfeit()` transaction to the chain depending on whether the user owned the file. It uses `useTx()` to construct the transaction and use `signAndSend()` method to send the transaction.
+    - **ConnectWallet** 组件允许用户切换不同的钱包提供商，包括 Enkrypt、Polkadot.js 扩展、SubWallet 和 Talisman。一个典型的选择是使用 [Polkadot.js 扩展](https://polkadot.js.org/extension/)。<br/>
 
-    - **ConnectWallet** component allows users to switch from different wallet providers, including Enkrypt, Polkadot.js extension, SubWallet, and Talisman. A typical choice would be to use [Polkadot.js extension](https://polkadot.js.org/extension/).<br/>
-
-        ![Our Front end supports multiple wallet providers](../../assets/developer/tutorials/poe-ink/wallet-type.png)
+        ![前端支持不同的钱包提供商](../../assets/developer/tutorials/poe-ink/wallet-type.png)
 
         It uses `useWallet()` to get the wallet connection function and `useAllWallets()` to get the information of all supported wallets.
+        它用 `useWallet()` 获取钱包连接功能，并使用 `useAllWallets()` 获取所有支持的钱包信息。
 
-    - **WalletSwitcher** component retrieves all available accounts provided by the wallet chosen in **ConnectWallet**, using the `accounts` object. It also uses `setAccount()` to set a particular account and `disconnect()` to disconnect from the chosen wallet.
+    - **WalletSwitcher** 组件以 `accounts`对象取得在 **ConnectWallet** 已选取的钱包所有的可用账户。并使用 `setAccount()` 设置某个特定账户，同也可用 `disconnect()`断开与所选钱包的连接。
 
-8. Finally, we have a front end similar to the following:<br/>
+8. 最后，我们得到一个类似于以下页面的前端：<br/>
 
     ![Proof of Existence Front end](../../assets/developer/tutorials/poe-ink/full-frontend.png)
 
-# Tutorial Completion
+# 教程完成
 
-**Congratulation**! Let's recap what we have done in this tutorial:
+**恭喜，您已顺利完成本教程**! 让我们回顾一下本教程：
 
-- We have successfully implemented a PoE logic in ink! smart contract and deploy it on a local CESS node.
-- We have successfully implemented the front end that interacts with the smart contract, starting with the Substrate Front End Template and **useink** React library.
+- 您已成功用 ink! 智能合约实现了 PoE 逻辑并将其部署在本地 CESS 节点上。
+- 从使用 Substrate 前端模板 和 **useink** React 库开始，您已经成功实现了与智能合约交互的前端。
 
-Now, you can build your dApps and deploy them on the CESS testnet to test it out. For the next step, you can also learn how to [develop a dApp with Solidity smart contract](./poe-solidity.md) as well.
+现在，您可以构建 dApp 并将其部署在 CESS 测试网上进行测试。下一步，您还可以学习如何 [开发 Solidity 智能合约的 dApp](./poe-solidity.md)。
 
-## References
+## 参考文档
 
 - [Ink! 4.0](https://use.ink/)
 - [CESS Node](https://github.com/CESSProject/cess)
-- [Substrate Front End Template](https://github.com/CESSProject/substrate-frontend-template)
+- [Substrate 前端模版](https://github.com/CESSProject/substrate-frontend-template)
 - [Substrate Contracts UI](https://contracts-ui.substrate.io/)
