@@ -449,11 +449,11 @@ function Main() {
 
     至此，前端应该显示 “Proof of Existence Ink! dApp” 这一行。
 
-3. From now on, we will mainly focus on the file `src/ProofOfExistenceInk.js`. We will not be adding code line by line here, but focus on the APIs provided by **useink** library that facilitate ink! smart contract interaction.
+3. 从现在开始，我们将主要关注在文件 `src/ProofOfExistenceInk.js`。我们不会在这里逐行添加代码，但我们會介绍 **useink** 库提供的 API，以方便與 ink！智能合约交互。
 
-    Refer to the code [`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceInk.js).
+    参考代码：[`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceInk.js)
 
-4. Starting from [the bottom](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L194-L201), we have:
+4. 从 [文件底部](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L194-L201) 开始，我们有：
 
     ```jsx
     <UseInkProvider
@@ -466,13 +466,13 @@ function Main() {
     </UseInkProvider>
     ```
 
-    `UseInkProvider` context hook provides ink! contract connection information to its children components. A config object is passed in with the name, and:
+    `UseInkProvider` context Hook 提供 ink！与其子组件的合约连接信息。配置对需要以下參數：
 
-    - `chains.id`: there are public chains with well-known IDs. As we connect to a local development chain, we set it to `custom`.
-    - `chain.name`: the name of the chain. It will be displayed when prompting for wallet connections.
-    - `chain.rpcs`: we get this value from the app config, which points to a local chain RPC endpoint `wss://localhost:9944`.
+    - `chains.id`: 存在具有知名 ID 的公链。当我们连接到本地开发链时，我们将其设置为 `custom`。
+    - `chain.name`: 链的名称。提示钱包连接时会显示。
+    - `chain.rpcs`: 我们从应用程序配置中获取该值，该值指向本地链 RPC 终端 `wss://localhost:9944`。
 
-    With `UseInkProvider`, we can make ink! API calls inside `<ProofOfExistenceInk />` component.
+    透过 `UseInkProvider`，我们可以在 `<ProofOfExistenceInk />` 组件内调用 ink! 的 API 函数。
 
 5. Looking at the code inside [`function ProofOfExistenceInk(props) {...}`](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L31)
 
