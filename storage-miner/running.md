@@ -23,7 +23,7 @@ Docker 安装请参考[官方文档](https://docs.docker.com/engine/install/)。
 以下命令均以 root 权限执行。如果出现错误消息 `permission denied`，请切换到 root 权限或在这些命令的开头添加 `sudo`。
 {% endhint %}
 
-默认情况下，cess-bucket 使用端口 4001 监听传入连接，如果您的平台默认阻止该端口，您可能需要启用对该端口的访问。
+默认情况下，节点客户端 **cess-bucket**，使用端口 4001 监听传入连接，如果您的平台阻止该端口 (或在防火墙监控内) ，您需要打开对该端口的访问。
 
 ```bash
 ufw allow 4001
@@ -37,7 +37,7 @@ ufw allow 4001
 $ df -h
 ```
 
-如果該磁盘並未挂载，則不會在存储挖矿中被使用上。使用以下命令查看硬盘是否已挂载：
+如果该磁盘并未挂载，则不会在存储挖矿中被使用上。使用以下命令查看硬盘是否已挂载：
 
 ```bash
 $ fdisk -l
@@ -66,28 +66,32 @@ the value after default
 w
 ```
 
-将新划分的磁盘格式化为 ext4 格式：
+将新划分的磁盘格式化为 `ext4` 格式：
 
 ```bash
 mkfs.ext4 /dev/vdb
 ```
 
-如果系统要求進一步輸入，请输入 `y` 继续：
+如果系统要求进一步输入，请输入 `y` 继续：
 
 ```bash
 Proceed anyway? (y,N) y
 ```
 
-创建 `/cess` 目录来挂载磁盘。用 `/cess` 来举个例子：
+创建 `/cess` 目录来挂载磁盘。这里用 `/cess` 目录作为例子：
 
 ```bash
 mkdir /cess
 echo "/dev/vdb /cess ext4 defaults 0 0" >> /etc/fstab
 ```
 
-将 `/dev/vdb` 替换为您自己的磁盘名称。/cess 必须与上一步中创建的相同。如果您没有 root 权限，请尝试：<br/>`echo "/dev/vdb /cess ext4 defaults 0 0" | sudo tee -a /etc/fstab`
+将 `/dev/vdb` 替换为您自己的磁盘名称。 命令中的 `/cess` 必须与上一步中创建的相同。如果您没有 root 权限，请尝试：
 
-安装`/cess`：
+```bash
+echo "/dev/vdb /cess ext4 defaults 0 0" | sudo tee -a /etc/fstab
+```
+
+安装 `/cess`：
 
 ```bash
 mount -a
@@ -108,19 +112,19 @@ df -h
 - **收益账户**：用于获取挖矿奖励。
 - **质押账户**：用于质押和签署区块链交易。
 
-请参阅 [CESS 帐户](../community/cess-account.md) 创建 CESS 帐户，然後前往 [CESS 水龙头](https://cess.cloud/faucet.html) 获取 TCESS，或 [联系我们](../introduction/contact.md) 寻求帮助。
+请参阅 [CESS 帐户](../community/cess-account.md) 创建 CESS 帐户，然后前往 [CESS 水龙头](https://cess.cloud/faucet.html) 获取测试代币 TCESS，或 [联系我们](../introduction/contact.md) 寻求帮助。
 
 # 安装 CESS 客户端
 
 ```bash
-wget https://github.com/CESSProject/cess-nodeadm/archive/v0.3.3.tar.gz
-tar -xvf v0.3.3.tar.gz
-cd cess-nodeadm-0.3.3/
+wget https://github.com/CESSProject/cess-nodeadm/archive/v0.4.4.tar.gz
+tar -xvf v0.4.4.tar.gz
+cd cess-nodeadm-0.4.4/
 ./install.sh
 ```
 
 {% hint style="info" %}
-检查您使用的是否 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags) 的 `cess-nodeadm`。目前是**v0.3.3**。
+检查您使用的是否 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags) 的 `cess-nodeadm`。目前是**v0.4.4**。
 {% endhint %}
 
 如果出现该条消息—— `Install cess nodeadm success`，则表示安装成功。
@@ -156,19 +160,19 @@ $ cess start
 
 # 常用操作
 
-**检查 CESS 链同步状态**
+## 检查 CESS 链同步状态
 
 ```bash
 docker logs chain
 ```
 
-如下图所示，如果我们在 [CESS 瀏覧器](https://testnet.cess.cloud/) 中看到 “best” 对应的区块高度约为最新高度，则说明本地链节点同步完成。
+如下图所示，如果我们在 [CESS 浏覧器](https://testnet.cess.cloud/) 中看到 “best” 对应的区块高度约为最新高度，则说明本地链节点同步完成。
 
 ![CESS 区块链同步完成](../assets/storage-miner/running/sync-status.png)
 
 只有链同步完成后，才能操作其他功能，如增加质押、查看节点状态等。
 
-**查看存储节点日志**
+## 查看存储节点日志
 
 ```bash
 docker logs bucket
@@ -178,7 +182,7 @@ docker logs bucket
 
 ![存储节点日志](../assets/storage-miner/running/view-node-log.webp)
 
-**查看存储桶状态**
+## 查看存储桶状态
 
 ```bash
 cess bucket stat
@@ -186,17 +190,17 @@ cess bucket stat
 
 返回结果示例如下：
 
-![CESS bucket 统计](../assets/storage-miner/running/bucket-stat.png)
+![CESS Bucket 统计](../assets/storage-miner/running/bucket-stat.png)
 
-上述名称的進一步解釋，请参阅 [术语對照](../glossary.md#storage-miner)。
+上述名称的进一步解释，请参阅 [术语对照](../glossary.md#storage-miner)。
 
-**增加质押**
+## 增加质押
 
 ```bash
 cess bucket increase <deposit amount>
 ```
 
-**撤回质押**
+## 撤回质押
 
 当您的节点**退出 CESS 网络**（见下文）后，运行以下命令：
 
@@ -204,41 +208,37 @@ cess bucket increase <deposit amount>
 cess bucket withdraw
 ```
 
-**查询奖励信息**
+## 查询奖励信息
 
 ```bash
 cess bucket reward
 ```
 
-**领取奖励**
+## 领取奖励
 
 ```bash
 cess bucket claim
 ```
 
-**更新所有服务图像**
+## 更新所有服务镜像
 
 ```bash
 cess pullimg
 ```
 
-**停止并删除所有服务**
+## 停止并删除所有服务
 
 ```bash
 cess down
 ```
 
-**更新收入账户**
+## 更新收入账户
 
 ```bash
 cess bucket update earnings [earnings account]
 ```
 
-**退出 CESS 网络**
-
-{% hint style="danger" %}
-请谨慎使用该命令。一旦退出，就无法继续。
-{% endhint %}
+## 退出 CESS 网络
 
 ```bash
 cess bucket exit
@@ -246,14 +246,14 @@ cess bucket exit
 
 # 升级 CESS 客户端
 
-**停止并删除所有服务**
+## 停止并删除所有服务
 
 ```bash
 cess stop
 cess down
 ```
 
-**删除所有链数据**
+## 删除所有链数据
 
 {% hint style="warning" %}
 除非 CESS 网络已重新部署且确认数据可以清除，否则请勿执行此操作。
@@ -263,7 +263,7 @@ cess down
 cess purge
 ```
 
-**更新 `cess-nodeadm`**
+## 更新 `cess-nodeadm`
 
 ```bash
 wget https://github.com/CESSProject/cess-nodeadm/archive/<new-version>.tar.gz
@@ -274,9 +274,9 @@ cd cess-nodeadm-<new-version>
 ./install.sh --skip-dep
 ```
 
-目前 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags)是 **v0.3.3** 。
+目前 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags)是 **v0.4.4** 。
 
-**拉取镜像**
+## 拉取镜像
 
 ```bash
 cess pullimg
