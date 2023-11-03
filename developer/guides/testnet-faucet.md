@@ -8,7 +8,7 @@ CESS 测试网已上线。您可以通过 <https://substats.cess.cloud> 访问 C
 
 1. 打开我们的 [**测试网水龙头**](https://cess.cloud/faucet.html) 页. 您可以看到以下内容。<br/>
 
-    ![测试网水笼头](../../assets/developer/guides/testnet-faucet/01-faucet-screen.png)
+    ![测试网水龙头](../../assets/developer/guides/testnet-faucet/01-faucet-screen.png)
 
 2. 在地址输入中输入帐户地址，地址应该以 `c...` 开头，单击按钮 `Get TCESS` 确认。<br/>
 

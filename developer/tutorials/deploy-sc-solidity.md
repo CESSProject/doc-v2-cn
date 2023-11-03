@@ -7,7 +7,7 @@
 您需要准备以下内容才能将 Solidity 智能合约成功部署到 CESS。
 
 - **MetaMask**：需要获取以太坊地址并连接到 CESS 链
-- **CESS 钱包帐号**：如还没有 CESS 帐号，查看[这篇文档](../../community/cess-account.md)看如何创建帐号，并从 [测试水龙台](../guides/testnet-faucet.md) 取得测试代币。
+- **CESS 钱包帐号**：如还没有 CESS 帐号，查看[这篇文档](../../community/cess-account.md)看如何创建帐号，并从 [测试水龙头](../guides/testnet-faucet.md) 取得测试代币。
 - **Remix IDE**[：Remix IDE](https://remix.ethereum.org/)，在线 IDE 能开发、编译智能合约，并将其部署到链上。
 - **访问 CESS 节点**：确保该节点允许 MetaMask 访问
 
@@ -55,7 +55,7 @@
 
 # 为账户注资
 
-使用 [CESS Explorer](https://testnet.cess.cloud/) **账户->转账**，将部分余额转入合约地址。在 Testnet 上则可先到 [水笼头](https://cess.cloud/faucet.html) 取得测试代币进行这一步。
+使用 [CESS Explorer](https://testnet.cess.cloud/) **账户->转账**，将部分余额转入合约地址。在 Testnet 上则可先到 [水龙头](https://cess.cloud/faucet.html) 取得测试代币进行这一步。
 
 ![CESS Explorer：余额转帐](../../assets/developer/tutorials/deploy-sc-solidity/05.png)
 

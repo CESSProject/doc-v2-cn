@@ -8,23 +8,23 @@ CESS 账户承载了用户在 CESS 网络中的数字资产。用户需要妥善
 
 - 点击 **Settings**，在 *in-browser account creation*，点选 **Allow local in-browser account storage**.<br/>
 
-    ![CESS 浏覧器：设置](../assets/community/cess-account/cess-expl-settings.png)
+    ![CESS 浏览器：设置](../assets/community/cess-account/cess-expl-settings.png)
 
 - 在顶部导航栏中点击 **Accounts**，在下拉单内点击 **Add account** 创建新帐户。<br/>
 
-    ![CESS 浏覧器：添加帐户](../assets/community/cess-account/cess-expl-add-acct.png)
+    ![CESS 浏览器：添加帐户](../assets/community/cess-account/cess-expl-add-acct.png)
 
 - 请务必备份好 12 个单词的 "Mnemonic seed"。然后进入下一步。<br/>
 
-    ![CESS 浏覧器：显示 Mnemonic seed](../assets/community/cess-account/cess-expl-showing-mnemonic.png)
+    ![CESS 浏览器：显示 Mnemonic seed](../assets/community/cess-account/cess-expl-showing-mnemonic.png)
 
 - 创建帐户昵称及密码, 点击 **Next**，然后点击 **Save** 来储存帐户的原种子。<br/>
 
-    ![CESS 浏覧器：输入密码](../assets/community/cess-account/cess-expl-entering-pwd.png)
+    ![CESS 浏览器：输入密码](../assets/community/cess-account/cess-expl-entering-pwd.png)
 
 - 恭喜! 您已成功创建 CESS 钱包账户。<br/>
 
-    ![CESS 浏覧器：帐户成功创建](../assets/community/cess-account/cess-expl-acct-created.png)
+    ![CESS 浏览器：帐户成功创建](../assets/community/cess-account/cess-expl-acct-created.png)
 
 # 方法 2: 使用 Polkadot.js 钱包创建账户
 
@@ -42,4 +42,4 @@ CESS 账户承载了用户在 CESS 网络中的数字资产。用户需要妥善
 
 - 您可在 [CESS 浏览器](https://testnet.cess.cloud/) 内查看您的帐户。<br/>
 
-    ![在CESS 浏覧器查看帐户](../assets/community/cess-account/view-acct-cess-explorer.png)
+    ![在CESS 浏览器查看帐户](../assets/community/cess-account/view-acct-cess-explorer.png)

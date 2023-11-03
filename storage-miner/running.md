@@ -166,7 +166,7 @@ $ cess start
 docker logs chain
 ```
 
-如下图所示，如果我们在 [CESS 浏覧器](https://testnet.cess.cloud/) 中看到 “best” 对应的区块高度约为最新高度，则说明本地链节点同步完成。
+如下图所示，如果我们在 [CESS 浏览器](https://testnet.cess.cloud/) 中看到 “best” 对应的区块高度约为最新高度，则说明本地链节点同步完成。
 
 ![CESS 区块链同步完成](../assets/storage-miner/running/sync-status.png)
 

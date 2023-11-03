@@ -35,7 +35,7 @@ curl ifconfig.co
 
 请参阅 [创建 CESS 账户](../community/cess-account.md)，及前往 [CESS 水龙头](https://cess.cloud/faucet.html)获取 TCESS，或[联系我们](../introduction/contact.md)获取 TCESS 代币进行质押。
 
-创建钱包帐户后，导航至[CESS 浏覧器](https://testnet.cess.cloud/)。
+创建钱包帐户后，导航至[CESS 浏览器](https://testnet.cess.cloud/)。
 
 ## 为 Stash 帐户绑定资金
 
@@ -150,7 +150,7 @@ pull images finished
 
 3. 设置 session 密钥<br/>
 
-    导航到 [CESS 浏覧器](https://testnet.cess.cloud), 选择 **Network** > **Staking** > **Accounts** > **Session Key**<br/>
+    导航到 [CESS 浏览器](https://testnet.cess.cloud), 选择 **Network** > **Staking** > **Accounts** > **Session Key**<br/>
 
     ![Session Key 01](../assets/consensus-miner/running/session-key-01.png)
 
@@ -164,7 +164,7 @@ pull images finished
 
 4. 成为验证者<br/>
 
-    导航到 [CESS 浏覧器](https://testnet.cess.cloud), 选择 **Network** > **Staking** > **Accounts** > **Validate**<br/>
+    导航到 [CESS 浏览器](https://testnet.cess.cloud), 选择 **Network** > **Staking** > **Accounts** > **Validate**<br/>
 
     ![Validator 01](../assets/consensus-miner/running/validator-01.webp)
 
@@ -178,7 +178,7 @@ pull images finished
 
     ![Validator 03](../assets/consensus-miner/running/validator-03.png)
 
-    完成上述步骤后，打开 [CESS 浏覧器](https://testnet.cess.cloud/)，点击 **Network** > **Staking** > **Waiting**.<br/>
+    完成上述步骤后，打开 [CESS 浏览器](https://testnet.cess.cloud/)，点击 **Network** > **Staking** > **Waiting**.<br/>
 
     ![Validator 04](../assets/consensus-miner/running/validator-04.webp)
 
@@ -186,7 +186,7 @@ pull images finished
 
 ## 兑换奖励
 
-导航至 CESS 浏覧器: **Network** > **Staking** > **Payouts** > **Payout**.
+导航至 CESS 浏览器: **Network** > **Staking** > **Payouts** > **Payout**.
 
 ![兑换: 第一步](../assets/consensus-miner/running/redemption-01.png)
 
@@ -202,13 +202,13 @@ pull images finished
 
 1. 停止共识节点<br/>
 
-    在 [CESS 浏覧器](https://testnet.cess.cloud), 导航至：**Network > Staking > Account Actions > Stop**.<br/>
+    在 [CESS 浏览器](https://testnet.cess.cloud), 导航至：**Network > Staking > Account Actions > Stop**.<br/>
 
     ![Exiting-01](../assets/consensus-miner/running/exiting-01.png)
 
 2. 清除 session 密钥<br/>
 
-    在 [CESS 浏覧器](https://testnet.cess.cloud), 导航至：**Developer -> Submission**<br/>
+    在 [CESS 浏览器](https://testnet.cess.cloud), 导航至：**Developer -> Submission**<br/>
 
     ![Exiting-02](../assets/consensus-miner/running/exiting-02.png)
 
@@ -224,7 +224,7 @@ pull images finished
 
 1. 解绑资金<br/>
 
-    28 个 eras 后（测试网每个 eras 为 24 小时），执行以下操作：在 [CESS 浏覧器](https://testnet.cess.cloud/), 导航至：**Network > Staking > Account Actions > Unbond Funds**.<br/>
+    28 个 eras 后（测试网每个 eras 为 24 小时），执行以下操作：在 [CESS 浏览器](https://testnet.cess.cloud/), 导航至：**Network > Staking > Account Actions > Unbond Funds**.<br/>
 
     ![Staking 01](../assets/consensus-miner/running/staking-01.png)
 
