@@ -4,13 +4,13 @@
 
    👉 [社区成员](community/README.md)
 
-2. **dApp 用户**：他们使用基于 CESS 构建的 dApp。例如，他们将个人数据存储在 DeOSS 上，以避免对任何单一集中式的存储过度依赖。
+2. **用户**：他们使用基于 CESS 构建的 dApp。例如，他们将个人数据存储在 DeOSS 上，以避免对任何单一集中式的存储过度依赖。
 
-   👉 [dApp 用户](user/README.md)
+   👉 [用户](user/README.md)
 
-3. **dApp 开发者**：他们使用 CESS SDK 和 API 在 CESS 之上构建应用程序。例如，他们想要发行新的 NFT 并决定将其 NFT 资产放在 CESS 上。
+3. **开发者**：他们使用 CESS SDK 和 API 在 CESS 之上构建应用程序。例如，他们想要发行新的 NFT 并决定将其 NFT 资产放在 CESS 上。
 
-   👉 [dApp 开发者](developer/README.md)
+   👉 [开发者](developer/README.md)
 
 4. **存储矿工**：他们在 CESS 网络中运行存储节点，为用户提供存储空间。
 
