@@ -1,6 +1,16 @@
+**数据即价值，价值即未来**
+
+欢迎来到 CESS 的文档门户。
+
 # 🗂 项目介绍
 
-您好，欢迎来到 **Cumulus Encrypted Storage System**（CESS）的文档系列。CESS 是一个安全、高效、开源、可扩展、基于区块链技术的数据价值交互网络，支持大规模商业存储，为 Web3 高频动态数据的存储和检索提供最佳解决方案。CESS 支持数据价值化和数据价值自由流通/共享，以去中心化的方式实现数据的存储和分发，确保数据主权和用户隐私。
+CESS (Cumulus Encrypted Storage System) 是基于区块链的去中心化云存储网络和 CDN 网络，支持数据在线存储和实时共享，为 Web3 高频动态数据的存储和检索提供全栈解决方案。
+
+CESS 数据价值网络是以 DePIN 理念建设的 Layer 1 基础设施，具有去中心化，高效，安全隐私和可扩展等特性。CESS 支持大规模商业存储，能够承载现象级去中心化应用程序（dApps）；CESS 支持数据价值化和数据价值自由流通/共享，同时用去信任的方式实现用户数据隐私保护和数据主权回归数据拥有者，进而构建一个繁荣、多元、数据资产主权的数据经济新生态。
+
+{% hint style="success" %}
+**CESS: 集成去中心化云存储与 CDN 网络，打造 Web3 价值互联网。**
+{% endhint %}
 
 我们将在本部份对 CESS 进行[概要解说](introduction/what-is-cess.md)，说明其[技术亮点](introduction/technical-highlight.md)以及[应用场景](introduction/use-cases.md)。
 
