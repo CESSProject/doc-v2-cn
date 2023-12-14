@@ -32,6 +32,7 @@
     * [部署 Solidity 智能合约](developer/tutorials/deploy-sc-solidity.md)
     * [用 Javascript SDKs 进行开发](developer/tutorials/cess-js-sdk.md)
     * [构建存在证明 dApp (ink!)](developer/tutorials/poe-ink.md)
+    * [构建 NFT 交易平台 (ink!)](developer/tutorials/nft-marketplace.md)
     * [构建存在证明 dApp (Solidity)](developer/tutorials/poe-solidity.md)
   * [指南](developer/guides/README.md)
     * [测试网水龙头](developer/guides/testnet-faucet.md)
