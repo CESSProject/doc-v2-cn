@@ -194,7 +194,256 @@ curl -X PUT http://deoss-pub-gateway.cess.cloud/ \
 
 ## 开发
 
-## TODO
+1. 让我们从创建一个新合约开始
+
+    ```bash
+    cargo contract new nft_market
+    cd nft_market
+    ```
+
+    最后一个命令将创建 ink! 合约项目的框架。
+
+    该目录内有三个文件。
+
+    ```
+    nft_market/
+      ∟ .gitignore    # contains files to ignore when committing to git
+      ∟ Cargo.toml    # This is a Rust project, so there is a Cargo.toml file for the project specification.
+      ∟ lib.rs        # The actual smart contract and unit test code.
+    ```
+
+2. 让我们构建并测试合约
+
+    ```bash
+    cargo contract build # This command builds the contract project.
+    cargo test           # This command runs the unit test code starting at the `mod tests` line in the code.
+    ```
+
+    运行 `cargo contract build` 生成三个文件：
+
+    - `contract.wasm`: 合约代码
+    - `contract.json`：合约元数据
+    - `contract.contract`：合约代码和元数据
+
+    前端（参见下一节）需要阅读 `contract.json` 合约的 API。我们将用于 `contract.contract` 在链上实例化合约。
+
+
+3. 我们将使用基于 PSP34 Token 标准的 [openbrush 库](https://github.com/Brushfam/openbrush-contracts) 以及许多其他编写 ink! 的有用功能，使我们的开发更快、更安全、更轻松。要将 openbrush 库添加到您的项目中，请在您的 `Cargo.toml` 加以下的依賴。另外，将您的 `ink` 依赖项从 `4.2.0` 更新为 `~4.2.1`。
+
+    ```toml
+    [dependencies]
+    ink = { version = "~4.2.1", default-features = false }
+    #...
+    openbrush = { tag = "4.0.0-beta", git = "https://github.com/Brushfam/openbrush-contracts", default-features = false, features = ["psp34", "ownable", "reentrancy_guard"] }
+    #...
+    ```
+
+    现在，添加`openbrush/std`到`[features]`：
+
+    ```toml
+    [features]
+    default = ["std"]
+    std = [
+        # ...,
+        "openbrush/std",
+    ]
+    ```
+
+4. 打开`lib.rs`并删除除顶层结构之外的所有内容，如下：
+
+    ```rust
+    #![cfg_attr(not(feature = "std"), no_std, no_main)]
+
+    #[ink::contract]
+    mod nft_market {
+      // We will fill up the code here next
+    }
+    ```
+
+5. 让我们先从 Openbrush 添加所需的组件开始。我们将使用 PSP34 代币标准，`Ownable`用于可以拥有的代币，`PSP34Mintable` 使用户能够铸造新代币，`PSP34Metadata`将我们的元数据存储在区块链上，`PSP34Enumerable` 进行枚举。我们还需要更改 `ink::contract` 为 `openbrush::contract`。
+
+    ```rust
+    #![cfg_attr(not(feature = "std"), no_std, no_main)]
+
+    mod impls;
+
+    #[openbrush::implementation(PSP34, PSP34Mintable, PSP34Metadata, PSP34Enumerable, Ownable)]
+    #[openbrush::contract]
+    mod nft_market {
+      // We will fill up the code here next
+    }
+    ```
+
+6. ink! 合约需要一个 `struct` 来将我们的数据存储在区块链上，最少需要一个构造函数和一个消息函数。考虑到这一点，我们首先在 `struct` 存储中添加在 `nft_market` 模块內。
+
+    ```rust
+    //...
+    mod nft_market {
+        // We will add our dependencies here
+        #[ink(storage)]
+        #[derive(Default, Storage)]
+        pub struct NftMarket {
+            #[storage_field]
+            psp34: psp34::Data,
+            #[storage_field]
+            guard: reentrancy_guard::Data,
+            #[storage_field]
+            ownable: ownable::Data,
+            #[storage_field]
+            metadata: metadata::Data,
+            #[storage_field]
+            nftdata: impls::types::NftData,
+            #[storage_field]
+            enumerable: enumerable::Data,
+        }
+    }
+    ```
+
+    我们希望存储在区块链上的每种数据类型都需要用 `#[storage_field]` 宏来指定。
+
+    - `psp34`：存储 PSP34 令牌标准相关数据
+    - `guard`：用于防止重入攻击
+    - `ownable`：允许我们创建也可以传输的可拥有数据，
+    - `metadata`：存储自定义属性
+    - `nftdata`：我们将在这里存储 NFT 相关数据，例如最大供应量、每枚铸币的价格等。
+    - `enumerable`：查询 NFT 发行数量或查询 NFT 代币。
+
+7. 现在我们需要实现 NftMarket 结构并向其添加构造函数。
+
+    ```rust
+    //...
+    mod nft_market {
+        ...
+        pub struct NftMarket {
+           ...
+        }
+
+        impl NftMarket {
+        #[ink(constructor)]
+            pub fn new() -> Self {
+                // We will add our code here
+            }
+        }
+    }
+    ```
+
+8. 由于现在已经有了构造函数，因此我们可以在 “We will add our dependencies here” 部分添加依赖项。
+
+    ```rust
+    //...
+    mod nft_market {
+        use crate::impls;
+        use ink::codegen::{EmitEvent, Env};
+        use openbrush::{
+            contracts::{
+                psp34::{extensions::metadata, PSP34Impl},
+                reentrancy_guard,
+            },
+            traits::Storage,
+        };
+        //...
+    }
+    ```
+
+    请注意，我们尚未创建在此处添加为依赖项的 impls 模块。但我们很快就会创建它。
+
+9. 为了保持智能合约的灵活性，我们将在部署智能合约时从用户那里获取一些输入，使他们能够设置
+
+    1. `name`: 智能合约的名称
+    2. `symbol`: 代币符号
+    3. `base_uri`: 在哪里访问我们的 NFT 文件
+    4. `price_per_mint`: 用户铸造代币所需支付的 CESS 代币数量
+
+    现在我们来定义在步骤 7 中编写的构造函数主体。
+
+    ```rust
+    //...
+    impl NftMarket {
+        #[ink(constructor)]
+        pub fn new(
+            name: String,
+            symbol: String,
+            base_uri: String,
+            max_supply: u64,
+            price_per_mint: Balance,
+        ) -> Self {
+            let mut instance = Self::default();
+            let caller = instance.env().caller();
+            ownable::InternalImpl::_init_with_owner(&mut instance, caller);
+            let col_id = PSP34Impl::collection_id(&instance);
+            metadata::InternalImpl::_set_attribute(
+                &mut instance,
+                col_id.clone(),
+                String::from("name"),
+                name,
+            );
+            metadata::InternalImpl::_set_attribute(
+                &mut instance,
+                col_id.clone(),
+                String::from("symbol"),
+                symbol,
+            );
+            metadata::InternalImpl::_set_attribute(
+                &mut instance,
+                col_id,
+                String::from("baseUri"),
+                base_uri,
+            );
+            instance.nftdata.max_supply = max_supply;
+            instance.nftdata.price_per_mint = price_per_mint;
+            instance
+        }
+    }
+    ```
+
+10. 事件（Events）：要在智能合约中发生某个事件时发出事件，我们可以使用 `#[ink(event)]`来定义事件。我们将添加 `Transfer` 和 `Approval` 事件，覆盖 `psp34::Internal` 的事件。
+
+    ```rust
+    mod nft_market {
+    //...
+        /// Event emitted when a token transfer occurs.
+        #[ink(event)]
+        pub struct Transfer {
+            #[ink(topic)]
+            from: Option<AccountId>,
+            #[ink(topic)]
+            to: Option<AccountId>,
+            #[ink(topic)]
+            id: Id,
+        }
+
+        /// Event emitted when a token approve occurs.
+        #[ink(event)]
+        pub struct Approval {
+            #[ink(topic)]
+            from: AccountId,
+            #[ink(topic)]
+            to: AccountId,
+            #[ink(topic)]
+            id: Option<Id>,
+            approved: bool,
+        }
+
+        // Override event emission methods
+        #[overrider(psp34::Internal)]
+        fn _emit_transfer_event(&self, from: Option<AccountId>, to: Option<AccountId>, id: Id) {
+            self.env().emit_event(Transfer { from, to, id });
+        }
+
+        #[overrider(psp34::Internal)]
+        fn _emit_approval_event(&self, from: AccountId, to: AccountId, id: Option<Id>, approved: bool) {
+            self.env().emit_event(Approval {
+                from,
+                to,
+                id,
+                approved,
+            });
+        }
+    //...
+    }
+    ```
+
+### TODO 11
 
 
 # 结论
