@@ -228,7 +228,7 @@ curl -X PUT http://deoss-pub-gateway.cess.cloud/ \
     前端（参见下一节）需要阅读 `contract.json` 合约的 API。我们将用于 `contract.contract` 在链上实例化合约。
 
 
-3. 我们将使用基于 PSP34 Token 标准的 [openbrush 库](https://github.com/Brushfam/openbrush-contracts) 以及许多其他编写 ink! 的有用功能，使我们的开发更快、更安全、更轻松。要将 openbrush 库添加到您的项目中，请在您的 `Cargo.toml` 加以下的依賴。另外，将您的 `ink` 依赖项从 `4.2.0` 更新为 `~4.2.1`。
+3. 我们将使用基于 PSP34 Token 标准的 [openbrush 库](https://github.com/Brushfam/openbrush-contracts) 以及许多其他编写 ink! 的有用功能，使我们的开发更快、更安全、更轻松。要将 openbrush 库添加到您的项目中，请在您的 `Cargo.toml` 加以下的依赖。另外，将您的 `ink` 依赖项从 `4.2.0` 更新为 `~4.2.1`。
 
     ```toml
     [dependencies]
@@ -274,7 +274,7 @@ curl -X PUT http://deoss-pub-gateway.cess.cloud/ \
     }
     ```
 
-6. ink! 合约需要一个 `struct` 来将我们的数据存储在区块链上，最少需要一个构造函数和一个消息函数。考虑到这一点，我们首先在 `struct` 存储中添加在 `nft_market` 模块內。
+6. ink! 合约需要一个 `struct` 来将我们的数据存储在区块链上，最少需要一个构造函数和一个消息函数。考虑到这一点，我们首先在 `struct` 存储中添加在 `nft_market` 模块内。
 
     ```rust
     //...
@@ -443,8 +443,406 @@ curl -X PUT http://deoss-pub-gateway.cess.cloud/ \
     }
     ```
 
-### TODO 11
+11. 现在让我们创建自定义存储项目 `NftData`。需要为此创建一个新目录 `impls` 并创建 `mod.rs`,`types.rs` 和 `market.rs`. 您的目录结构应如下所示：
 
+    ```
+    .
+    ├── Cargo.lock
+    ├── Cargo.toml
+    ├── impls
+    │   ├── market.rs
+    │   ├── mod.rs
+    │   └── types.rs
+    └── lib.rs
+    ```
+
+12. 打开 mod.rs 文件并添加：
+
+    ```rust
+    pub mod market;
+    pub mod types;
+    ```
+
+13. 现在，打开 `types.rs` 以创建我们的自定义 `NftData` 结构。
+
+    ```rust
+    use openbrush::{traits::{Balance, String}, storage::Mapping, contracts::psp34::Id};
+
+    #[derive(Default, Debug)]
+    #[openbrush::storage_item]
+    pub struct NftData {
+        pub last_token_id: u64,
+        pub collection_id: u32,
+        pub max_supply: u64,
+        pub price_per_mint: Balance,
+        pub fid_list: Mapping<Id, String>,
+        pub sale_list: Mapping<Id, Balance>,
+    }
+    ```
+
+    在这段代码中：
+
+    - `last_token_id` 保存最新铸造的代币 ID。这样，生成的每个新令牌都会递增，`last_token_id` 为令牌提供唯一的 ID。
+    - `collection_id` 是我们收藏的唯一 ID。
+    - `max_supply` 是我们可以铸造的 NFT 的最大数量。
+    - `price_per_mint` 是用户铸造 NFT 所需支付的价格。
+    - `fid_list` 是我们作为 NFT 铸造的 Token ID 和文件 ID 的映射。
+    - `sale_list` 包含列出待售的 NFT 列表。
+
+    我们创建的任何需要存储在区块链上的自定义数据结构都需要用 `#[openbrush::storage_item]` 宏进行标记。我们还将添加一个 `enum` 用来包含所有错误消息的内容。
+
+    ```rust
+    //...
+    #[derive(Debug, PartialEq, Eq, scale::Encode, scale::Decode)]
+    #[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]
+    pub enum NftError {
+        BadMintValue,
+        CollectionIsFull,
+        WithdrawalFailed,
+        NotTokenOwner,
+        NotForSale,
+        OwnToken,
+        PriceNotMatch,
+        TransferNativeTokenFailed,
+    }
+
+    impl NftError {
+        pub fn as_str(&self) -> String {
+            match self {
+                NftError::BadMintValue => String::from("BadMintValue"),
+                NftError::CollectionIsFull => String::from("CollectionIsFull"),
+                NftError::WithdrawalFailed => String::from("WithdrawalFailed"),
+                NftError::NotTokenOwner => String::from("NotTokenOwner"),
+                NftError::NotForSale => String::from("NotForSale"),
+                NftError::OwnToken => String::from("OwnToken"),
+                NftError::PriceNotMatch => String::from("PriceNotMatch"),
+                NftError::TransferNativeTokenFailed => String::from("TransferNativeTokenFailed"),
+            }
+        }
+    }
+    ```
+
+14. 现在进入了令人兴奋的部分，我们将编写实际的合约功能——就在我们的 `market.rs` 文件里。在我们的 `market.rs` 文件中，我们将添加继承 openbrush 特征的自定义特征，以将我们采用的方式添加到合约中。
+
+    ```rust
+    use ink::prelude::string::ToString;
+
+    use openbrush::{
+        contracts::{
+            ownable::{self, only_owner},
+            psp34::{
+                self,
+                extensions::metadata::{self, PSP34MetadataImpl},
+                Id, PSP34Error, PSP34Impl,
+            },
+            reentrancy_guard,
+            reentrancy_guard::non_reentrant,
+        },
+        modifiers,
+        traits::{AccountId, Balance, Storage, String},
+    };
+
+    use super::types::{NftData, NftError};
+
+    #[openbrush::trait_definition]
+    pub trait MarketImpl:
+        Storage<NftData>
+        + Storage<psp34::Data>
+        + Storage<reentrancy_guard::Data>
+        + Storage<ownable::Data>
+        + Storage<metadata::Data>
+        + PSP34Impl
+        + PSP34MetadataImpl
+        + psp34::extensions::metadata::Internal
+        + Internal
+    {
+        // We will write our functions here
+    }
+    ```
+
+15. 让我们将第一个函数 `mint` 函数，添加到 `MarketImpl` 中。这将用来铸造我们的 NFT。
+
+    ```rust
+    // Mint token to
+    #[ink(message, payable)]
+    #[modifiers(non_reentrant)]
+    fn mint(&mut self, fid: String) -> Result<Id, PSP34Error> {
+        self.check_fid(fid.clone())?;
+        self.check_value(Self::env().transferred_value())?;
+
+        let caller = Self::env().caller();
+        let id = Id::U64(self.data::<NftData>().last_token_id + 1); // first mint id is 1
+        self._mint_to(caller, id.clone())?;
+        self.data::<NftData>().fid_list.insert(&id, &fid);
+        self.data::<NftData>().last_token_id += 1;
+        Ok(id)
+    }
+    ```
+
+    由于用户必须支付代币才能铸造 NFT，因此我们将为此函数添加 `payable` 宏。此外，添加 `message` 宏使 API 可以使用该函数来调用合约。更多关于 `message` 的信息可以点击 [此处](https://use.ink/macros-attributes/message) 找到。
+
+    至于 check_fid 和 check_value 函数，我们将在后面的部分中定义它们。`mint` 函数接受 `fid` 作为用户的输入。`fid` 是我们将文件上传到 CESS 网络时获得的文件 ID。在我们的 `mint` 函数中，我们首先通过调用 `Self::env()::caller()` 提取 `caller` ，然后生成一个新的代币 `id`，并将 NFT 代币铸造给调用者。我们还将文件 ID 存储在 `fid_list` 映射中，该映射将把 Token 的 `id` 映射为 `fid`。最后，我们增加 `last_token_id`。
+
+16. 如果您想让用户为其他用户铸造代币，您可以添加以下功能。
+
+    ```rust
+    // Mint token to
+    #[ink(message, payable)]
+    #[modifiers(non_reentrant)]
+    fn mint_to(&mut self, to: AccountId, fid: String) -> Result<Id, PSP34Error> {
+        self.check_fid(fid.clone())?;
+        self.check_value(Self::env().transferred_value())?;
+
+        let id = Id::U64(self.data::<NftData>().last_token_id + 1); // first mint id is 1
+        self._mint_to(to, id.clone())?;
+        self.data::<NftData>().fid_list.insert(&id, &fid);
+        self.data::<NftData>().last_token_id += 1;
+        Ok(id)
+    }
+    ```
+
+17. 使合约所有者能够设置或更新 `base_uri` 并 `max_supply`，请添加以下功能：
+
+    ```rust
+    // Set new value for the baseUri
+    #[ink(message)]
+    #[modifiers(only_owner)]
+    fn set_base_uri(&mut self, uri: String) -> Result<(), PSP34Error> {
+        let id = PSP34Impl::collection_id(self);
+        metadata::Internal::_set_attribute(self, id, String::from("baseUri"), uri);
+        Ok(())
+    }
+
+    // Set max supply of tokens
+    #[ink(message)]
+    #[modifiers(only_owner)]
+    fn set_max_supply(&mut self, value: u64) -> Result<(), PSP34Error> {
+        self.data::<NftData>().max_supply = value;
+        Ok(())
+    }
+    ```
+    > 注意：`#[modifiers(only_owner)]` 函数顾名思义，只能由合约所有者调用。
+
+18. 让我们添加一些函数，用户可以调用这些函数来获取存储在合约中的一些信息。
+
+    ```rust
+    // Get URI from token ID
+    #[ink(message)]
+    fn token_uri(&self, id: u64) -> Result<String, PSP34Error> {
+        let id = Id::U64(id);
+        self.token_exists(id.clone())?;
+        let base_uri = PSP34MetadataImpl::get_attribute(
+            self,
+            PSP34Impl::collection_id(self),
+            String::from("baseUri"),
+        );
+        let fid = self
+            .data::<NftData>()
+            .fid_list
+            .get(&id)
+            .ok_or(PSP34Error::TokenNotExists)?;
+
+        let token_uri = base_uri.unwrap() + &fid;
+        Ok(token_uri)
+    }
+
+    // Get token price
+    #[ink(message)]
+    fn price(&self, id: u64) -> Result<Balance, PSP34Error> {
+        let id = Id::U64(id);
+        let price = self
+            .data::<NftData>()
+            .sale_list
+            .get(&id)
+            .ok_or(PSP34Error::Custom(NftError::NotForSale.as_str()));
+        price
+    }
+
+    // Get price per mint
+    #[ink(message)]
+    fn price_per_mint(&self) -> Balance {
+        self.data::<NftData>().price_per_mint
+    }
+
+    // Get max supply of tokens
+    #[ink(message)]
+    fn max_supply(&self) -> u64 {
+        self.data::<NftData>().max_supply
+    }
+
+     // Get Contract Balance
+    #[ink(message)]
+    fn balance(&mut self) -> Balance {
+        let balance = Self::env().balance();
+        let current_balance = balance
+            .checked_sub(Self::env().minimum_balance())
+            .unwrap_or_default();
+        current_balance
+    }
+    ```
+
+19. 最后让我们添加允许用户展示和出售 NFT 的功能。
+
+    ```rust
+    /// Lists NFT for Sale
+    #[ink(message)]
+    fn list(&mut self, id: u64, price: Balance) -> Result<(), PSP34Error> {
+        let id = Id::U64(id);
+        self.check_owner(id.clone())?;
+        self.data::<NftData>()
+            .sale_list
+            .insert(&id, &(price * 1_000_000_000_000));
+        Ok(())
+    }
+
+    /// Delist NFT from Sale
+    #[ink(message)]
+    fn delist(&mut self, id: u64) -> Result<(), PSP34Error> {
+        let id = Id::U64(id);
+        self.check_owner(id.clone())?;
+        if self.data::<NftData>().sale_list.get(&id).is_none() {
+            return Err(PSP34Error::Custom(NftError::NotForSale.as_str()));
+        }
+        self.data::<NftData>().sale_list.remove(&id);
+        Ok(())
+    }
+
+    /// Purchase NFT that is listed for Sale
+    #[ink(message, payable)]
+    fn purchase(&mut self, id: u64) -> Result<(), PSP34Error> {
+        let id = Id::U64(id);
+        let owner = self._check_token_exists(&id.clone())?;
+        let caller = Self::env().caller();
+        if owner == caller {
+            return Err(PSP34Error::Custom(NftError::OwnToken.as_str()));
+        };
+
+        let price = self
+            .data::<NftData>()
+            .sale_list
+            .get(&id)
+            .ok_or(PSP34Error::Custom(NftError::NotForSale.as_str()))?;
+        let transferred = Self::env().transferred_value();
+
+        if price != transferred {
+            return Err(PSP34Error::Custom(
+                NftError::PriceNotMatch.as_str()
+                    + "Required:"
+                    + &price.to_string()
+                    + ", Supplied:"
+                    + &transferred.to_string(),
+            ));
+        }
+
+        // Transfer native tokes
+        if Self::env().transfer(owner, price).is_err() {
+            return Err(PSP34Error::Custom(
+                NftError::TransferNativeTokenFailed.as_str(),
+            ));
+        }
+
+        self.data::<NftData>().sale_list.remove(&id);
+
+        // Transfer NFT Token
+        self._before_token_transfer(Some(&owner), Some(&caller), &id)?;
+        self._remove_operator_approvals(&owner, &caller, &Some(&id));
+        self._remove_token_owner(&id);
+        self._insert_token_owner(&id, &caller);
+        self._after_token_transfer(Some(&owner), Some(&caller), &id)?;
+        self._emit_transfer_event(Some(owner), Some(caller), id.clone());
+
+        // TODO: Move CESS File metadata from owner to caller
+
+        Ok(())
+    }
+
+    /// Withdraws funds to contract owner
+    #[ink(message)]
+    #[modifiers(only_owner)]
+    fn withdraw(&mut self) -> Result<(), PSP34Error> {
+        let balance = Self::env().balance();
+        let current_balance = balance
+            .checked_sub(Self::env().minimum_balance())
+            .unwrap_or_default();
+        let owner = self.data::<ownable::Data>().owner.get().unwrap().unwrap();
+        Self::env()
+            .transfer(owner, current_balance)
+            .map_err(|_| PSP34Error::Custom(NftError::WithdrawalFailed.as_str()))?;
+        Ok(())
+    }
+    ```
+
+    该 `list` 函数讲列出所有待售的 NFT，同时 `delist` 将我们的 NFT 下架。一旦用户将其 NFT 挂牌出售，该 NFT 就可供其他用户购买。他们可以调用 `purchase` 函数得到想要购买的 NFT 的 NFT ID 。由于购买是付费功能，用户还必须转移所需数量的代币才能成功转移。
+
+
+    > 💡 温馨提示：在 `market.rs` 文件中您会注意到一些待办。为了使教程简单，我们没有实现这些功能。
+
+    最后，该 `withdraw` 函数提取所有收集到的代币，同时将 NFT 铸造到合约所有者的地址。
+
+20. 现在，让我们为 NftData 创建一个继承 `internal` 特征的自定义特征。在这特征中定义的功能不会暴露给用户，因此称为内部功能 (internal trait)。我们将添加一些用于验证所有者、转账资金等的功能。
+
+    ```rust
+    pub trait Internal: Storage<NftData> + psp34::Internal {
+        /// Check if the caller is owner of the token
+        fn check_owner(&self, id: Id) -> Result<(), PSP34Error> {
+            let owner = self._check_token_exists(&id.clone())?;
+            let caller = Self::env().caller();
+            if owner != caller {
+                return Err(PSP34Error::Custom(NftError::NotTokenOwner.as_str()));
+            }
+            Ok(())
+        }
+
+        /// Check if the transferred mint value is as expected
+        fn check_value(&self, transferred_value: u128) -> Result<(), PSP34Error> {
+            if transferred_value != self.data::<NftData>().price_per_mint {
+                return Err(PSP34Error::Custom(
+                    NftError::BadMintValue.as_str()
+                        + "Required:"
+                        + &self.data::<NftData>().price_per_mint.to_string()
+                        + ", Supplied:"
+                        + &transferred_value.to_string(),
+                ));
+            }
+
+            if self.data::<NftData>().last_token_id >= self.data::<NftData>().max_supply {
+                return Err(PSP34Error::Custom(NftError::CollectionIsFull.as_str()))
+            }
+
+            Ok(())
+        }
+
+        fn check_fid(&self, _fid: String) -> Result<(), PSP34Error> {
+            // TODO: Check if fid exists in CESS Chain.
+            Ok(())
+        }
+
+        fn token_exists(&self, id: Id) -> Result<(), PSP34Error> {
+            self._owner_of(&id).ok_or(PSP34Error::TokenNotExists)?;
+            Ok(())
+        }
+    }
+    ```
+
+21. 最后，让我们为 NftMarket 添加特征实现。打开 lib.rs 并添加以下代码。
+
+    ```rust
+    impl impls::market::Internal for NftMarket {}
+    impl impls::market::MarketImpl for NftMarket {}
+
+    impl NftMarket {
+      //...
+    }
+    ```
+
+    至此，我们的智能合约现在就可以编译和部署了。请遵循 ink! 合约部署智能合约并与其交互。
+
+
+{% hint style="success" %}
+💡 本教程的完整代码可以在以下位置找到：
+
+<https://github.com/CESSProject/cess-examples/tree/main/ink/nft_market>
+{% endhint %}
 
 # 结论
 
