@@ -16,8 +16,9 @@
 ### SGX 支持
 
 CPU 必须支持 [Intel Software Guard Extensions](https://www.intel.com/content/www/us/en/architecture-and-technology/software-guard-extensions.html) 及 Flexible Launch Control (FLC)。BIOS 必须支持 Intel SGX，并且必须启用 Intel SGX 选项。请参阅服务器制造商的 BIOS 指南以启用 SGX 功能。这里查看[支持 SGX 的 CPU 型号](https://ark.intel.com/content/www/us/en/ark/search/featurefilter.html?productType=873&2_SoftwareGuardExtensions=Yes)，包括 _Intel ME_，_Intel SPS_，或者 _同时是 Intel ME 和 Intel SPS_。</br>
-*`CPU推荐型号：Intel E、E3、Celeron(部分型号)、Core系列CPU，其中Intel Core i5-10500最佳。`*</br>
-*`主板BIOS推荐：supermicro等主流厂商`*
+
+- CPU 推荐型号：Intel E、E3、Celeron(部分型号)、Core 系列 CPU，其中 Intel Core i5-10500 最佳。
+- 主板 BIOS 推荐: Supermicro 等主流厂商
 
 ### 固网 IP
 
@@ -31,23 +32,30 @@ curl ifconfig.co
 # 准备 CESS 账户
 
 ## 决定您以哪种身份运行共识矿工
+
 CESSv0.7.6版本后，用户可以选择以下身份运行共识矿工：
+
 - **Full**：全节点具有全部的功能，用于兼容现有的TEE Worker类型，需要`绑定共识节点`进行注册；
+
 - **Verifier**：验证型节点主要处理闲置和服役随机挑战，该类型必须`绑定共识节点`进行注册；
+
 - **Marker**：认证型节点用于为用户服役文件计算Tag，处理闲置密钥生成，闲置认证和闲置替换工作，该类型可单独进行注册，服务于指定存储节点集群，***以该身份运行共识节点不增加信誉积分***；
 
-以`Full`和`Verifier`运行共识矿工需要两个帐户。
+以 **Full** 和 **Verifier** 运行共识矿工需要两个帐户。
+
 - **Stash 帐户**: 需要至少从节点所有者或其他用户委托质押 300,000 TCESS 才能运行共识验证器。
+
 - **Controller 帐户**: 需要至少 100 TCESS 来支付 Gas 费。
 
-以`Marker`运行共识矿工需要一个账户。
+以 **Marker** 运行共识矿工需要一个账户。
+
 - **Controller 帐户**: 仅需一笔用于注册交易的Gas费。
 
 请参阅[创建 CESS 账户](../community/cess-account.md)，及前往[CESS 水龙头](https://cess.cloud/faucet.html)获取 TCESS，或[联系我们](../introduction/contact.md)获取 TCESS 代币进行质押。
 
 创建钱包帐户后，导航至[CESS 浏览器](https://testnet.cess.cloud/)。
 
-## 为 Stash 帐户绑定资金(绑定共识节点)
+## 为 Stash 帐户绑定资金 (绑定共识节点)
 
 选择 **Network** ，点击 **Staking** > **Accounts** > **Stash**
 
@@ -94,8 +102,9 @@ sudo ./install.sh
 cess config set
 ```
 
-下面是以`Full`身份运行矿工的操作示例:</br>
-*`tips:当current默认值合适时，您可以按回车键跳过`*
+下面是以 **Full** 身份运行矿工的操作示例:
+
+*tips:当 current 默认值合适时，您可以按回车键跳过*
 
 ```bash
 Enter cess node mode from 'authority/storage/watcher' (current: authority, press enter to skip): authority
@@ -106,9 +115,11 @@ Enter cess chain ws url (default: ws://cess-chain:9944):
 Enter listener port for kaleido (current: 10010, press enter to skip):
 Start configuring the endpoint to access kaleido from the Internet
   Try to get your external IP ...
-##此步骤会自动检测您机器IP，若自动检测不正确请您将正确的http://ip:port填入，其中port为上一步您设置的值，当然您也可以将endpoint设置为域名。
+
+## 此步骤会自动检测您机器IP，若自动检测不正确请您将正确的http://ip:port填入，其中port为上一步您设置的值，当然您也可以将endpoint设置为域名。
 Enter the kaleido endpoint (current: http://221.122.79.3:10010, press enter to skip):
-##current为null代表为空，当您想成为Marker的时候可以直接回车跳过
+
+## current 为 null 代表为空，当您想成为Marker的时候可以直接回车跳过
 Enter cess validator stash account (current: null, press enter to skip): cXic3WhctsJ9cExmjE9vog49xaLuVbDLcFi2odeEnvV5Sbq4f
 Enter what kind of tee worker would you want to be [Full/Verifier]: Full
 Enter cess validator controller phrase: xxxxxxxxxxxxxx
@@ -320,7 +331,7 @@ cd cess-nodeadm-<new-version>
 ./install.sh --skip-dep
 ```
 
-目前 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags) 是 **v0.5.3**适配的CESS版本为v0.7.6。
+目前 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags) 为 **v0.7.6**。
 
 ## 拉取镜像
 
@@ -328,29 +339,36 @@ cd cess-nodeadm-<new-version>
 cess pullimg
 ```
 
-# 问题&&解答
+# 问题 & 解答
 
-**Q**：我并不想将自己的IP地址暴露在链上该怎么做？</br>
-**A**：您可以在`cess config set`过程中设置自己endpoint的时候将域名加入，例如您注册的域名为tee-xxx.cess.cloud，那么您可以在设置endpoint的时候填入http://tee-xxx.cess.cloud，随后脚本将询问您是否一键代理域名，您可以输入`y`实现一键代理，示例如下：
-```bash
-.....
-Enter the kaleido endpoint (current: http://tee-xxx.cess.cloud, press enter to skip): http://tee-xxx.cess.cloud
-Do you need to configure a domain name proxy with one click? (y/n): y
-.....
-```
-当然您也可以自行配置nginx代理，请不要使用域名服务商的中间代理。
+1. 我并不想将自己的 IP 地址暴露在链上该怎么做？</br>
 
-**Q**：我怎么知道程序有没有正常工作？</br>
-**A**：您可以在区块浏览器中选择`Chain State`，通过该方法您可以查询到是否注册成功
-![check-register](../assets/consensus-miner/qa/check-register.png)
+   您可以在`cess config set`过程中设置自己endpoint的时候将域名加入，例如您注册的域名为tee-xxx.cess.cloud，那么您可以在设置endpoint的时候填入http://tee-xxx.cess.cloud，随后脚本将询问您是否一键代理域名，您可以输入`y`实现一键代理，示例如下：
 
-**Q**：不想自动跟新程序该怎么做？</br>
-**A**：在程序完全启动成功后，会有一个`watchtower`的服务代替用户代替用户管理本地服务，当CESS官方对某个组件进行更新的时候，`watchtower`将会拉取最新的程序自动升级，如果您不想使用自动升级功能，您可以在进行`cess config set`之前，使用如下命令禁止自动更新。
-``` bash
-##禁止更新kld-sgx服务，当您选择禁止自动更新kld-sgx而选择手动更新时，更新过程中请删除/opt/cess/authority/kaleido/key/encrypted/podr2_key内文件。
-cess tools no_watchs kld-sgx
+   ```bash
+   .....
+   Enter the kaleido endpoint (current: http://tee-xxx.cess.cloud, press enter to skip): http://tee-xxx.cess.cloud
+   Do you need to configure a domain name proxy with one click? (y/n): y
+   .....
+   ```
+   当然您也可以自行配置nginx代理，请不要使用域名服务商的中间代理。
 
-##禁止更新kld-agent服务
-cess tools no_watchs kld-agent
-```
-您的每一次自动升级都意味着官方对共识矿工程序的bug修复，我们**非常不建议**您关闭自动升级功能，这可能导致您的服务**不可用**！
+2. 我怎么知道程序有没有正常工作？</br>
+
+   您可以在区块浏览器中选择`Chain State`，通过该方法您可以查询到是否注册成功
+
+   ![check-register](../assets/consensus-miner/qa/check-register.png)
+
+3. 不想自动跟新程序该怎么做？</br>
+
+   在程序完全启动成功后，会有一个`watchtower`的服务代替用户代替用户管理本地服务，当CESS官方对某个组件进行更新的时候，`watchtower`将会拉取最新的程序自动升级，如果您不想使用自动升级功能，您可以在进行`cess config set`之前，使用如下命令禁止自动更新。
+
+   ``` bash
+   ## 禁止更新 kld-sgx 服务，当您选择禁止自动更新kld-sgx而选择手动更新时，更新过程中请删除 /opt/cess/authority/kaleido/key/encrypted/podr2_key 内文件。
+   cess tools no_watchs kld-sgx
+
+   ## 禁止更新 kld-agent 服务
+   cess tools no_watchs kld-agent
+   ```
+
+   您的每一次自动升级都意味着官方对共识矿工程序的bug修复，我们**非常不建议**您关闭自动升级功能，这可能导致您的服务**不可用**！
