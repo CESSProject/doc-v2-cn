@@ -108,6 +108,7 @@ cess config set
 
 ```bash
 Enter cess node mode from 'authority/storage/watcher' (current: authority, press enter to skip): authority
+##当您选择authority后，将使用软件启动的方式为您机器启动Intel SGX驱动，这可能出现提示：“Software enable has been set. Please reboot your system to finish enabling Intel SGX.”请您再配置完成之后重启机器再进行接下来的步骤！
 Begin install sgx_enable ...
 Intel SGX is already enabled on this system
 Enter cess node name (current: cess, press enter to skip): cess
