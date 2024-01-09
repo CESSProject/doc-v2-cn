@@ -41,13 +41,13 @@ CESSv0.7.6版本后，用户可以选择以下身份运行共识矿工：
 
 - **Marker**：认证型节点用于为用户服役文件计算Tag，处理闲置密钥生成，闲置认证和闲置替换工作，该类型可单独进行注册，服务于指定存储节点集群，***以该身份运行共识节点不增加信誉积分***；
 
-以 **Full** 和 **Verifier** 运行共识矿工需要两个帐户。
+以 **Full** 和 **Verifier** 运行共识矿工需要两个帐户，如果您已经拥有自己的Stash账户或想指定其他人的Stash账户，则无需进行下方的 **绑定资金** 操作。
 
-- **Stash 帐户**: 需要至少从节点所有者或其他用户委托质押 300,000 TCESS 才能运行共识验证器。
+- **Stash 帐户**: 需要至少从节点所有者或其他用户委托质押 3,000,000 TCESS 才能运行共识验证器。
 
-- **Controller 帐户**: 需要至少 100 TCESS 来支付 Gas 费。
+- **Controller 帐户**: 仅需一笔用于注册交易的Gas费。
 
-以 **Marker** 运行共识矿工需要一个账户。
+以 **Marker** 运行共识矿工需要一个账户, 且无需进行下方的 **绑定资金** 操作。
 
 - **Controller 帐户**: 仅需一笔用于注册交易的Gas费。
 
@@ -59,21 +59,22 @@ CESSv0.7.6版本后，用户可以选择以下身份运行共识矿工：
 
 选择 **Network** ，点击 **Staking** > **Accounts** > **Stash**
 
-![新增 Stash 帐户](../assets/consensus-miner/running/acct-prep-01.webp)
+![新增 Stash 帐户](../assets/consensus-miner/running/consensus-pic1.png)
 
-选择 **Stash Account** 和 **Controller Account** 。
+选择 **Stash Account** 。_CESS
+v0.7.6版本以后绑定资金操作移除了controller账户。_
 
-Value bonded：建议 300,000 TCESS。在 _payment destination_ 选择第二个选项 **Stash Account as the reward receiving account (do not increase the amount at stake)**，即挖矿收入不会自动添加到质押中。
+Value bonded：至少 3,000,000 TCESS。在 _payment destination_ 选择第二个选项 **Stash Account as the reward receiving account (do not increase the amount at stake)**，即挖矿收入不会自动添加到质押中。
 
-![绑定资金](../assets/consensus-miner/running/acct-prep-02.webp)
+![绑定资金](../assets/consensus-miner/running/consensus-pic2.png)
 
 点击 **Bond** -> **Sign and Submit** 以连接 Stash Account 和 Controller Account 。
 
-![签名提交](../assets/consensus-miner/running/acct-prep-03.png)
+![签名提交](../assets/consensus-miner/running/consensus-pic3.png)
 
 资金绑定成功
 
-![资金绑定成功](../assets/consensus-miner/running/acct-prep-04.png)
+![资金绑定成功](../assets/consensus-miner/running/consensus-pic4.png)
 
 # 安装 CESS 客户端
 
