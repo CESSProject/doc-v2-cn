@@ -118,7 +118,7 @@ df -h
 
 # 安装 CESS 客户端
 
-1. 到這裡檢查最新的版本：<https://github.com/CESSProject/cess-nodeadm/tag>
+1. 到这里检查最新的版本：<https://github.com/CESSProject/cess-nodeadm/tag>
 
 2. 下载并安装
 
@@ -165,7 +165,7 @@ sudo cess profile devtnet
 sudo cess profile testnet
 ```
 
-## 準備配置文件
+## 准备配置文件
 
 ```bash
 sudo cess config set
@@ -178,7 +178,7 @@ Enter cess storage disk path: # 存储硬盘路径
 Enter cess storage space, by GB unit (current: 300, press enter to skip):
 Enter the number of CPU cores used for mining; Your CPU cores are 4
   (current: 3, 0 means all cores are used; press enter to skip):
-Enter the staker\'s payment account if you have one (press enter to skip): # 你的質押帳戶
+Enter the staker\'s payment account if you have one (press enter to skip): # 你的质押帐户
 Enter the reserved TEE worker endpoints (separate multiple values with commas, press enter to skip):
 Set configurations successfully
 ```
@@ -221,17 +221,17 @@ docker logs chain
 1. 前往 [**Polkadot-js Apps**: Developer > Chain state](https://polkadot.js.org/apps/#/chainstate)
 2. 在 *selected state query*: 中选择 **sminer** 模块和 **allMiner()** 存储项
 3. 单击左侧按钮查询状态
-4. 在返回的列表底部，您应该找到您的矿工地址，该地址是从您回答 `sudo cess config set` 生成的助记词（带有根路径）生成的。参见下圖示例。
+4. 在返回的列表底部，您应该找到您的矿工地址，该地址是从您回答 `sudo cess config set` 生成的助记词（带有根路径）生成的。参见下图示例。
 
    ![查询 CESS 的所有矿工](../assets/storage-miner/running/query-allminer.png)
 
-5. 你還可以查看详细的矿工信息。選擇 **sminer** 模塊和 **minerItems(AccountId32)** 存儲項. 在 *Option\<AccountId32\>*, 中选择/输入矿工地址。它将返回您的链上详细信息。参见下圖示例。
+5. 你还可以查看详细的矿工信息。选择 **sminer** 模块和 **minerItems(AccountId32)** 存储项. 在 *Option\<AccountId32\>*, 中选择/输入矿工地址。它将返回您的链上详细信息。参见下图示例。
 
-   ![查询 CESS 鏈上我的矿工詳情](../assets/storage-miner/running/query-miner-item.png)
+   ![查询 CESS 链上我的矿工详情](../assets/storage-miner/running/query-miner-item.png)
 
-6. 前往 [**Accounts** 頁面](https://polkadot.js.org/apps/#/accounts) 并检查您的账户详情，您会看到一定数量的 TCESS 被保留作为存储押金。
+6. 前往 [**Accounts** 页面](https://polkadot.js.org/apps/#/accounts) 并检查您的账户详情，您会看到一定数量的 TCESS 被保留作为存储押金。
 
-   ![作為存储矿工被保留的代币](../assets/storage-miner/running/storage-miner-deposit.png)
+   ![作为存储矿工被保留的代币](../assets/storage-miner/running/storage-miner-deposit.png)
 
 
 ## 查看存储节点日志
@@ -258,9 +258,9 @@ cess bucket stat
 
 At the beginning of the storage node synchronization, all your  are 0. It is only when the validated space been incremented above 0 that the storage miner start earning rewards. For testnet, it take about an hour **after** the storage node chain synchronization completed, as shown below.
 
-在存储节点同步开始时，所有您的 **validated space** (已驗証空間), **used space** (已使用空间), 及 **locked space** (已锁定空间) 都为 0。只有当已验证空间增加到大于 0 时，存储矿工才开始赚取奖励。对于测试网，在存储节点链同步完成后大约需要一个小时，將開始驗証存儲節點空間。如下所示。
+在存储节点同步开始时，所有您的 **validated space** (已验证空间), **used space** (已使用空间), 及 **locked space** (已锁定空间) 都为 0。只有当已验证空间增加到大于 0 时，存储矿工才开始赚取奖励。对于测试网，在存储节点链同步完成后大约需要一个小时，将开始验证存储节点空间。如下所示。
 
-![CESS 存储桶內已验证空间的统计](../assets/storage-miner/running/bucket-stat-validated-space.png)
+![CESS 存储桶内已验证空间的统计](../assets/storage-miner/running/bucket-stat-validated-space.png)
 
 ## 增加质押
 
