@@ -198,7 +198,7 @@ $ cess start
  ✔ Container watchtower  Running                                                0.0s
 ```
 
-如果您想加快存储矿工获取收益的速度，可以选择部署Marker型TEE Worker来帮助矿工认证空间和为服役文件打标，请参阅[TEE Worker用户指南](./TEE-Worker-Guide.md)
+如果您想加快存储矿工获取收益的速度，可以选择部署Marker型TEE Worker来帮助矿工认证空间和为服役文件打标，请参阅[TEE Worker用户指南](./teeworker.md)
 
 # 常用操作
 
