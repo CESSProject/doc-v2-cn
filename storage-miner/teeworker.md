@@ -68,7 +68,8 @@ Set configurations successfully
 ## 工作原理
 
 Marker 型 TEE Worker 工作原理如下图所示：
-![TEE Worker Marker](https://github.com/CESSProject/doc-v2-cn/assets/121914086/d1ed3e61-621c-4164-8353-5fca1f630e06)
+
+![TEE Worker Marker](../assets/storage-miner/teeworker/tee-workflow.jpeg)
 
 TEE Worker 通过 SGX 可信执行环境保护 Podr2 密钥，用于为用户服役文件fragment打标（多备份可恢复存储证明机制），以及验证并签名闲置空间认证或替换证明的结果。Podr2密钥在可信环境中生成，通过安全密钥交换通道传递到其他TEE Worker的可信环境中，不会泄露到外部，从而保证了算法的安全性；可信环境还对内部代码进行封装，并需要通过Intel远程认证，远程认证报告还需要在TEE Worker注册时被校验，以保证SGX内运行的代码是CESS官方公开且未被恶意篡改的，从而保障了服务的正确性。
 
