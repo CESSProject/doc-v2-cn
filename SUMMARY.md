@@ -43,6 +43,7 @@
 * [🛡 角色：存储矿工](storage-miner/README.md)
   * [运行节点](storage-miner/running.md)
   * [故障排除指南](storage-miner/troubleshooting.md)
+  * [TEE 工作机指南](storage-miner/teeworker.md)
   * [奖励机制](storage-miner/reward.md)
 * [🔒 角色：共识矿工](consensus-miner/README.md)
   * [运行节点](consensus-miner/running.md)
