@@ -4,7 +4,7 @@ CESS 账户承载了用户在 CESS 网络中的数字资产。用户需要妥善
 
 # 方法 1: 使用 CESS 区块链浏览器创建账户
 
-- 浏览至 [CESS 区块链浏览器](https://testnet.cess.cloud/)。
+- 浏览至 [CESS 区块链浏览器](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc0.cess.cloud%2Fws%2F#/explorer)。
 
 - 点击 **Settings**，在 *in-browser account creation*，点选 **Allow local in-browser account storage**.<br/>
 
@@ -40,6 +40,6 @@ CESS 账户承载了用户在 CESS 网络中的数字资产。用户需要妥善
 
     ![创建 CESS 帐户](../assets/community/cess-account/create-acct.png)
 
-- 您可在 [CESS 浏览器](https://testnet.cess.cloud/) 内查看您的帐户。<br/>
+- 您可在 [CESS 浏览器](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftestnet-rpc0.cess.cloud%2Fws%2F#/explorer) 内查看您的帐户。<br/>
 
     ![在CESS 浏览器查看帐户](../assets/community/cess-account/view-acct-cess-explorer.png)
