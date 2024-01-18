@@ -6,7 +6,7 @@ CESS 账户承载了用户在 CESS 网络中的数字资产。用户需要妥善
 
 - 浏览至 [CESS 区块链浏览器](https://testnet.cess.cloud/)。
 
-- 点击 **Settings**，在 *in-browser account creation*，点选 **Allow local in-browser account storage**.<br/>
+- 点击 **Settings**，在 *in-browser account creation*，点选 **Allow local in-browser account storage**，并点击右下方“save”按钮保存.<br/>
 
     ![CESS 浏览器：设置](../assets/community/cess-account/cess-expl-settings.png)
 
