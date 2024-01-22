@@ -63,7 +63,7 @@ CESSv0.7.6版本后，用户可以选择以下身份运行共识矿工：
 
 选择 **Stash Account** 和 **Controller Account** 。
 
-Value bonded：建议 300,000 TCESS。在 _payment destination_ 选择第二个选项 **Stash Account as the reward receiving account (do not increase the amount at stake)**，即挖矿收入不会自动添加到质押中。
+Value bonded：建议 3000,000 TCESS及以上（或首先质押300,000 TCESS，再由其他提名人所追加的质押总额超过3000,000 TCESS即可）。在 _payment destination_ 选择第二个选项 **Stash Account as the reward receiving account (do not increase the amount at stake)**，即挖矿收入不会自动添加到质押中。
 
 ![绑定资金](../assets/consensus-miner/running/acct-prep-02.webp)
 
