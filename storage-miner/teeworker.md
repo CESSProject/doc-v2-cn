@@ -8,11 +8,11 @@ TEE Worker 基于 [Gramine 库](https://gramineproject.io/)开发，目前仅支
 
 1. **Marker**：专用于服役数据打标、闲置空间认证和闲置空间替换等工作；
 2. **Verifier**：专用于服役数据和闲置空间的随机挑战验证，只能绑定共识节点注册；
-3. **Full**：全节点，及Marker和Verifier功能的并集，只能绑定共识节点注册；
+3. **Full**：全节点，及 Marker 和 Verifier 功能的并集，只能绑定共识节点注册；
 
 ## 收益介绍
 
-运行 TEE Worker 本身并不直接获得任何收益，而是通过执行存储网络的有效安全服务来为其相关节点更快速地获取更多的收益，TEE Worker有两种部署方式，分别可以获得不同的增益效果：
+运行 TEE Worker 本身并不直接获得任何收益，而是通过执行存储网络的有效安全服务来为其相关节点获取更多的收益，TEE Worker有两种部署方式，分别可以获得不同的增益效果：
 
 - 与共识节点绑定运行，只有在注册了共识节点的帐户签名的交易后才能工作。它需要相对较高的硬件要求，但其绑定的共识矿工也会获得更高的奖励。
 
@@ -20,7 +20,7 @@ TEE Worker 基于 [Gramine 库](https://gramineproject.io/)开发，目前仅支
 
 ## 为什么部署独立注册的 TEE Worker 能为存储矿工带来更多的收益？
 
-随机挑战时会根据存储矿工有效存储的用户数据（服役数据）和已认证的闲置空间在全网的占比来瓜分奖励。用户数据需经过 TEE Worker 打标后才能通过随机挑战，同样的，存储矿工批量生成的闲置空间也需要经过 TEE Worker 验证。但全网公开的 TEE Worker 资源有限，需要排队才能获得一次服务，对于性能较高的存储矿工，这往往是制约其生产效率的主要瓶颈之一，且由于区域网络差异的限制，分散在全球各地的存储节点获得 TEE Worker 服务的效率并不均等。因此，为消除这种差异，突破效率瓶颈，加速全网数据的验证，CESS 鼓励拥有数量较多存储矿工的用户独立注册运行若干个TEE Worker，专为自己服务。
+随机挑战时会根据存储矿工有效存储的用户数据（服役数据）和已认证的闲置空间在全网的占比来瓜分奖励。用户数据需经过 TEE Worker 打标后才能通过随机挑战，同样的，存储矿工批量生成的闲置空间也需要经过 TEE Worker 验证。但全网公开的 TEE Worker 资源有限，需要排队才能获得一次服务，对于性能较高的存储矿工，这往往是制约其生产效率的主要瓶颈之一，且由于区域网络差异的限制，分散在全球各地的存储节点获得 TEE Worker 服务的效率并不均等。因此，为消除这种差异，突破效率瓶颈，加速全网数据的验证，CESS 鼓励拥有数量较多存储矿工的用户独立注册运行若干个 TEE Worker 为自己节点服务。
 
 ## 操作指南
 
@@ -53,17 +53,17 @@ Enter cess node mode from 'authority/storage/watcher' (current: authority, press
 Intel SGX is already enabled on this system
 Enter cess node name (current: cess-test-node2-526824, press enter to skip): cess-test-node2
 Enter cess chain ws url (current: wss://testnet-rpc0.cess.cloud/ws/, press enter to skip): ws://129.226.81.243:9944
-Enter listener port for kaleido (current: 10010, press enter to skip): 
+Enter listener port for kaleido (current: 10010, press enter to skip):
 Enter the kaleido endpoint (current: http://test.dm.com, press enter to skip): http://45.195.74.43:10010
 Enter cess validator stash account (current: , press enter to skip): null
 Your Tee worker will work as 'Marker'!
-Enter cess validator controller phrase (current: level course inflict raise giant hammer blur run seed adjust ice goddess, press enter to skip): 
+Enter cess validator controller phrase (current: level course inflict raise giant hammer blur run seed adjust ice goddess, press enter to skip):
 Set configurations successfully
 ```
 
 在设置 validator stash account 账户时，填入 null 后自动配置为 Marker 模式，然后再输入 controller 账户（用于 TEE Worker 注册，发送交易等功能的工作账户）助记词（账户seed）即可完成配置。然后输入 `cess start` 命令启动 Marker 型 TEE Worker。
 
-**请注意**：上述配置中"kaleido endpoint"代表您部署的TEE Worker的访问地址，TEE Worker运行后，您可以在运行存储矿工时将该地址加入到优先访问列表中，如使用CESS客户端配置存储矿工时，在"Enter the reserved TEE woker endpoints"中配置；如果您是直接手动运行的存储矿工，则请在存储矿工的配置文件中的"TeeList:"项中以列表形式进行配置。
+**请注意**：上述配置中 "kaleido endpoint" 代表您部署的 TEE Worker 的访问地址，TEE Worker 运行后，您可以在运行存储矿工时将该地址加入到优先访问列表中，如使用CESS客户端配置存储矿工时，在 "Enter the reserved TEE woker endpoints" 中配置；如果您是直接手动运行的存储矿工，则请在存储矿工的配置文件中的 "TeeList:" 项中以列表形式进行配置。
 
 ## 工作原理
 
@@ -71,6 +71,6 @@ Marker 型 TEE Worker 工作原理如下图所示：
 
 ![Marker TEE worker workflow](../assets/storage-miner/teeworker/tee-workflow.jpeg)
 
-TEE Worker 通过 SGX 可信执行环境保护 Podr2 密钥，用于为用户服役文件fragment打标（多备份可恢复存储证明机制），以及验证并签名闲置空间认证或替换证明的结果。Podr2密钥在可信环境中生成，通过安全密钥交换通道传递到其他TEE Worker的可信环境中，不会泄露到外部，从而保证了算法的安全性；可信环境还对内部代码进行封装，并需要通过Intel远程认证，远程认证报告还需要在TEE Worker注册时被校验，以保证SGX内运行的代码是CESS官方公开且未被恶意篡改的，从而保障了服务的正确性。
+TEE Worker 通过 SGX 可信执行环境保护 PoDR² 密钥，用于为用户服役文件的分片打标（多备份可恢复存储证明机制），以及验证并签名闲置空间认证或替换证明的结果。PoDR² 密钥在可信环境中生成，通过安全密钥交换通道传递到其他 TEE Worker 的可信环境中，不会泄露到外部，从而保证了算法的安全性；可信环境还对内部代码进行封装，并需要通过 Intel 远程认证，远程认证报告还需要在 TEE Worker 注册时被校验，以保证 SGX 内运行的代码是 CESS 官方公开且未被恶意篡改的，从而保障了服务的正确性。
 
-此外，任何进入到SGX内部的用户请求参数，都需要进行合法性和完整性验证，以保证数据中途不会被篡改。
+此外，任何进入到 SGX 内部的用户请求参数，都需要进行合法性和完整性验证，以保证数据中途不会被篡改。
