@@ -3,7 +3,7 @@ RPC 节点不像共识节点那样直接参与出块工作，而是负责验证�
 ## 通过 cess-nodeadm 程序运行 RPC 节点
 
 1. 检查 cess-nodeadm 最新版本
-   cess-nodeadm最新版本位置: https://github.com/CESSProject/cess-nodeadm/tags<br/>
+   cess-nodeadm 最新版本位置: <https://github.com/CESSProject/cess-nodeadm/tags><br/>
    ⚠️ 本小节下文中所有的 `x.x.x` 用最新的版本号代替，例如最新的版本号是 `v0.5.3`，则 `x.x.x` 用 `0.5.3` 代替。
 
 2. 检查已安装的 cess-nodeadm 版本
@@ -41,10 +41,10 @@ RPC 节点不像共识节点那样直接参与出块工作，而是负责验证�
 ## 直接运行 RPC 节点
 
 1. 安装 rust 环境
-   参考substrate官方教程: https://docs.substrate.io/install/
+   参考 [substrate官方教程](https://docs.substrate.io/install/)
 
-2. 获取cess-node最新的发布版本
-   检查cess-node最新的版本：https://github.com/CESSProject/cess/tags
+2. 获取 cess-node 最新的发布版本
+   [检查 cess-node 最新的版本](https://github.com/CESSProject/cess/tags)
 
    以v0.7.5为最新版本为例，下载并解压cess-node程序：
 
