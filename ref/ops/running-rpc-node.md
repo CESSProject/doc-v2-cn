@@ -1,6 +1,9 @@
-RPC 节点不像共识节点那样直接参与出块工作，而是负责验证交易并在不同节点之间、节点与客户端之间中继通信，促进交易验证和链上信息检索等工作。如果您想运行自己的RPC 节点，有两种方法：一是通过 [cess-nodeadm 程序](https://github.com/CESSProject/cess-nodeadm) 启动，二是直接运行 [cess-node 程序](https://github.com/CESSProject/cess)。
+RPC 节点不像共识节点那样直接参与出块工作，而是负责验证交易并在不同节点之间、节点与客户端之间中继通信，促进交易验证和链上信息检索等工作。如果您想运行自己的RPC 节点，有两种方法:
 
-## 通过 cess-nodeadm 程序运行 RPC 节点
+1. 通过 [**cess-nodeadm**](https://github.com/CESSProject/cess-nodeadm) 启动。
+2. 直接运行 [**cess-node**](https://github.com/CESSProject/cess)。
+
+## 通过 cess-nodeadm 运行 RPC 节点
 
 1. 检查 cess-nodeadm 最新版本
    cess-nodeadm 最新版本位置: <https://github.com/CESSProject/cess-nodeadm/tags><br/>
@@ -10,7 +13,7 @@ RPC 节点不像共识节点那样直接参与出块工作，而是负责验证�
    在控制台中输入 `cess version` 命令，检查 `nodeadm version` 版本是否是最新的版本。
    如果nodeadm 是最新版本，则可跳过第 3 步。如果不是最新的版本则需要走第3步进行安装。如果没有看到 nodeadm version ，说明未安装过 cess-nodeadm，则需要走第3步进行安装。
 
-3. 下载并安装cess-nodeadm程序
+3. 下载并安装 cess-nodeadm
    ```shell
    wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
    tar -xvf vx.x.x.tar.gz
@@ -19,7 +22,7 @@ RPC 节点不像共识节点那样直接参与出块工作，而是负责验证�
    ```
 
 4. 停止RPC节点服务
-   输入命令：cess stop chain，停止已运行的RPC节点服务
+   输入命令：`cess stop chain`，停止已运行的 RPC 节点服务
 
 5. 定义脚本配置参数
    ```shell
@@ -52,17 +55,19 @@ RPC 节点不像共识节点那样直接参与出块工作，而是负责验证�
    wget https://github.com/CESSProject/cess/archive/v0.7.5.tar.gztar -zxvf v0.7.5.tar.gz
    ```
 
-3. 编译 cess-node 程序
+3. 编译 **cess-node**
 
    进入cess-node目录：
    ```shell
    cd cess-0.7.5/
+   cargo build --release
    ```
 
 4. 启动RPC服务
    ```shell
    # 0.7.5版本以前含0.7.5版本输入：
    ./target/release/cess-node --base-path 【您自定义数据库存放路径】 --chain cess-testnet --port 30333 --ws-port 9944 --rpc-port 9933 --unsafe-rpc-external --unsafe-ws-external --name 【您自定义的名字】 --rpc-cors all --ws-max-connections 2020 --state-pruning archive
+
    #0.7.5版本以后输入：
    ./target/release/cess-node --base-path 【您自定义数据库存放路径】 --chain cess-testnet --port 30333 --rpc-port 9944 --unsafe-rpc-external --name 【您自定义的名字】 --rpc-cors all --rpc-max-connections 2020 --state-pruning archive
    ```
