@@ -42,7 +42,7 @@
     * [DeOSS](https://docs.cess.cloud/deoss)
 * [🛡 角色：存储矿工](storage-miner/README.md)
   * [运行节点](storage-miner/running.md)
-  * [运行多 buckets 容器](storage-miner/running-multi-buckets-container.md)
+  * [运行多 buckets 容器](storage-miner/multi-buckets.md)
   * [故障排除指南](storage-miner/troubleshooting.md)
   * [TEE Worker 运行指南](storage-miner/teeworker.md)
   * [奖励机制](storage-miner/reward.md)

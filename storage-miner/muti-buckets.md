@@ -189,7 +189,7 @@
 
 3. 配置好配置文件的存储节点目录应当如下图所示：
 
-   ![配置结构](../assets/storage-miner/running-multi-buckets-container/folder.png)
+   ![配置结构](../assets/storage-miner/multi-buckets/folder.png)
 
 # 4. 配置并启动存储节点容器
 
