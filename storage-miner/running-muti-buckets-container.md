@@ -97,7 +97,7 @@
 
 以 Ubuntu（官方推荐存储节点操作系统）为例安装 docker.
 
-這裡參看[官方文檔](https://docs.docker.com/engine/install/)。
+这里参看[官方文档](https://docs.docker.com/engine/install/)。
 
 1. 更新系统软件包列表
 
@@ -189,7 +189,7 @@
 
 3. 配置好配置文件的存储节点目录应当如下图所示：
 
-   ![配置結構](../assets/storage-miner/running-multi-buckets-container/folder.png)
+   ![配置结构](../assets/storage-miner/running-multi-buckets-container/folder.png)
 
 # 4. 配置并启动存储节点容器
 
