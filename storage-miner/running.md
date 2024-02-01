@@ -29,7 +29,7 @@ Docker 安装请参考[官方文档](https://docs.docker.com/engine/install/)。
 ufw allow 4001
 ```
 
-## 磁盘挂载
+## 硬盘挂载
 
 使用以下命令检查硬盘状态`df -h`：
 
@@ -50,7 +50,7 @@ Disklabel type: dos
 Disk identifier: 0x331195d1
 ```
 
-由上述可知，未挂载的磁盘为 `/dev/vdb`。我们将用来 `/dev/vdb` 演示，安装操作如下。
+由上述可知，未挂载的硬盘为 `/dev/vdb`。我们将用来 `/dev/vdb` 演示，安装操作如下。
 
 分配 `/dev/vdb` 磁盘：
 
@@ -105,73 +105,87 @@ df -h
 
 如果 `/cess` 出现则说明磁盘挂载成功。
 
-## 准备 CESS 账户
+# 准备 CESS 账户
 
-矿工需要创建两个钱包账户。
+矿工需要创建最少两个钱包账户。
 
 - **收益账户**：用于接收挖矿获得的奖励。
 - **质押账户**：用于支付存储节点的质押费用。
-- **签名账户**：用于签名区块链交易。 如果没有指定质押账户，该账户也将用于支付质押费用。
+- **签名账户**：用*于签名区块链交易。 如果没有指定质押账户，该账户也将用于支付质押费用。
+- **存储矿工保证金**：为了确保存储节点矿工遵守其服务承诺，矿工账户将锁定其本机代币，以提供承诺的存储空间。目前在测试网上，每 TB 的存储空间需要锁定 4,000 TCESS。承诺的空间将四舍五入到最接近的 TB 单位，并锁定该数量乘以 4,000 TCESS。最小锁定代币也为 4,000 TCESS。
 
-请参阅 [CESS 帐户](../community/cess-account.md) 创建 CESS 帐户，然后前往 [CESS 水龙头](https://cess.cloud/faucet.html) 获取测试代币 TCESS，或 [联系我们](../introduction/contact.md) 寻求帮助。
+请参阅 [创建 CESS 帐户](../community/cess-account.md) 了解如何创建 CESS 帐户，然后前往 [CESS 水龙头](https://cess.cloud/faucet.html) 获取测试代币 TCESS，或 [联系我们](../introduction/contact.md) 获取帮助。
 
 # 安装 CESS 客户端
-1. Check for the latest version at：https://github.com/CESSProject/cess-nodeadm/tag
-```
-⚠️ According to the latest version number, replace the following x.x.x
-```
-2. Download and install
+
+1. 到这里检查最新的版本：<https://github.com/CESSProject/cess-nodeadm/tag>
+
+2. 下载并安装
+
+   ```bash
+   wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
+   tar -xvf vx.x.x.tar.gz
+   cd cess-nodeadm-x.x.x/
+   ./install.sh
+   ```
+
+   {% hint style="info" %}
+   ⚠️ 用最新版本（截至目前为止为 **0.5.3**）替换上述的 `x.x.x`。
+   {% endhint %}
+
+   如果最末一句出现消息 `Install cess nodeadm success`，则表示安装成功。
+
+   如果安装失败，请查看 [故障排除步骤](./troubleshooting.md)。
+
+# 停止并移除已有服务
+
+停止已有的服务：
+
 ```bash
-wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
-tar -xvf vx.x.x.tar.gz
-cd cess-nodeadm-x.x.x/
-./install.sh
-```
-
-如果出现该条消息—— `Install cess nodeadm success`，则表示安装成功。
-
-如果安装失败，请查看 [故障排除步骤](./troubleshooting.md)。
-
-## 停止并移除旧服务
-停止旧的服务：
-```
-cess stop
-```
-或者
-```
+sudo cess stop
+# 或者
 cess down
 ```
-移除旧的服务：
-```
-cess purge
-```
 
-## 配置 CESS 客户端
-### 设置网络环境
-切换到CESS开发网：
-```
-cess profile devtnet
-```
-切换到CESS测试网：
-```
-cess profile testnet
-```
+移除已有的服务：
 
-### 配置配置文件
 ```bash
-$ cess config set
+sudo cess purge
+```
 
-Enter cess node mode from 'authority/storage/watcher' (current: watcher, press enter to skip): storage
-Enter cess storage listener port (current: 15001, press enter to skip): 
-Enter cess storage earnings account (current: cXiqKzVVamJ2d5cMKomh1ED4prAnKevr2v3nZgNH87HRuY4Xy, press enter to skip): 
-Enter cess storage staking signature phrase (current: situate double coral cycle ritual country rebuild ridge slush smoke verb acquire, press enter to skip): 
-Enter cess storage disk path (current: /mnt/storage-disk, press enter to skip): 
-Enter cess storage space, by GB unit (current: 300, press enter to skip): 
+# 配置 CESS 客户端
+
+## 设置网络环境
+
+```bash
+# 切换到CESS开发网：
+sudo cess profile devtnet
+
+# 或 切换到CESS测试网：
+sudo cess profile testnet
+```
+
+## 准备配置文件
+
+```bash
+sudo cess config set
+
+Enter cess node mode from 'authority/storage/watcher': storage
+Enter cess storage listener port (current: 15001, press enter to skip):
+Enter cess storage earnings account: # 输入账户以获得奖励，账户应以 "c..." 开头。
+Enter cess storage staking signature phrase: # 请输入您的质押账户助记词
+Enter cess storage disk path: # 存储硬盘路径
+Enter cess storage space, by GB unit (current: 300, press enter to skip):
 Enter the number of CPU cores used for mining; Your CPU cores are 4
-  (current: 3, 0 means all cores are used; press enter to skip): 
-
+  (current: 3, 0 means all cores are used; press enter to skip):
+Enter the staker\'s payment account if you have one (press enter to skip): # 你的质押帐户
+Enter the reserved TEE worker endpoints (separate multiple values with commas, press enter to skip):
 Set configurations successfully
 ```
+
+- 如果提供了质押付款账户，对于测试网，承诺的空间（输入 **Enter cess storage space** 的答案）将 **四舍五入** 到最接近的 TB 单位，并将该数量乘以 4,000 个 TCESS 作为矿工押金进行锁定。
+- 如果未提供质押付款账户，则会要求提供另一个账户，即签名账户，并将从该账户锁定代币。
+- 如果您未提供任何 TEE 工作端点，则将使用链的默认 TEE 工作端点。这不会影响您作为存储矿工的奖励。
 
 启动 CESS bucket
 
@@ -183,6 +197,8 @@ $ cess start
  ✔ Container bucket      Running                                                0.0s
  ✔ Container watchtower  Running                                                0.0s
 ```
+
+如果您想加快存储矿工获取收益的速度，可以选择部署Marker型TEE Worker来帮助矿工认证空间和为服役文件打标，请参阅[TEE Worker用户指南](./teeworker.md)
 
 # 常用操作
 
@@ -196,7 +212,27 @@ docker logs chain
 
 ![CESS 区块链同步完成](../assets/storage-miner/running/sync-status.png)
 
-只有链同步完成后，才能操作其他功能，如增加质押、查看节点状态等。
+只有在链同步完成后，才能操作其他功能，如增加质押、查看节点状态等。
+
+## 链上检查您的存储矿工状态
+
+您可以在链上检查您的矿工状态。
+
+1. 前往 [**Polkadot-js Apps**: Developer > Chain state](https://polkadot.js.org/apps/#/chainstate)
+2. 在 *selected state query*: 中选择 **sminer** 模块和 **allMiner()** 存储项
+3. 单击左侧按钮查询状态
+4. 在返回的列表底部，您应该找到您的矿工地址，该地址是从您回答 `sudo cess config set` 生成的助记词（带有根路径）生成的。参见下图示例。
+
+   ![查询 CESS 的所有矿工](../assets/storage-miner/running/query-allminer.png)
+
+5. 你还可以查看详细的矿工信息。选择 **sminer** 模块和 **minerItems(AccountId32)** 存储项. 在 *Option\<AccountId32\>*, 中选择/输入矿工地址。它将返回您的链上详细信息。参见下图示例。
+
+   ![查询 CESS 链上我的矿工详情](../assets/storage-miner/running/query-miner-item.png)
+
+6. 前往 [**Accounts** 页面](https://polkadot.js.org/apps/#/accounts) 并检查您的账户详情，您会看到一定数量的 TCESS 被保留作为存储押金。
+
+   ![作为存储矿工被保留的代币](../assets/storage-miner/running/storage-miner-deposit.png)
+
 
 ## 查看存储节点日志
 
@@ -220,10 +256,16 @@ cess bucket stat
 
 上述名称的进一步解释，请参阅 [术语对照](../glossary.md#storage-miner)。
 
+At the beginning of the storage node synchronization, all your  are 0. It is only when the validated space been incremented above 0 that the storage miner start earning rewards. For testnet, it take about an hour **after** the storage node chain synchronization completed, as shown below.
+
+在存储节点同步开始时，所有您的 **validated space** (已验证空间), **used space** (已使用空间), 及 **locked space** (已锁定空间) 都为 0。只有当已验证空间增加到大于 0 时，存储矿工才开始赚取奖励。对于测试网，在存储节点链同步完成后大约需要一个小时，将开始验证存储节点空间。如下所示。
+
+![CESS 存储桶内已验证空间的统计](../assets/storage-miner/running/bucket-stat-validated-space.png)
+
 ## 增加质押
 
 ```bash
-cess bucket increase <deposit amount>
+sudo cess bucket increase <deposit amount>
 ```
 
 ## 撤回质押
@@ -231,43 +273,43 @@ cess bucket increase <deposit amount>
 当您的节点**退出 CESS 网络**（见下文）后，运行以下命令：
 
 ```bash
-cess bucket withdraw
+sudo cess bucket withdraw
 ```
 
 ## 查询奖励信息
 
 ```bash
-cess bucket reward
+sudo cess bucket reward
 ```
 
 ## 领取奖励
 
 ```bash
-cess bucket claim
+sudo cess bucket claim
 ```
 
 ## 更新所有服务镜像
 
 ```bash
-cess pullimg
+sudo cess pullimg
 ```
 
 ## 停止并删除所有服务
 
 ```bash
-cess down
+sudo cess down
 ```
 
 ## 更新收入账户
 
 ```bash
-cess bucket update earnings [earnings account]
+sudo cess bucket update earnings [earnings account]
 ```
 
 ## 退出 CESS 网络
 
 ```bash
-cess bucket exit
+sudo cess bucket exit
 ```
 
 # 升级 CESS 客户端
@@ -275,8 +317,8 @@ cess bucket exit
 ## 停止并删除所有服务
 
 ```bash
-cess stop
-cess down
+sudo cess stop
+sudo cess down
 ```
 
 ## 删除所有链数据
@@ -286,7 +328,7 @@ cess down
 {% endhint %}
 
 ```bash
-cess purge
+sudo cess purge
 ```
 
 ## 更新 `cess-nodeadm`
@@ -294,14 +336,12 @@ cess purge
 ```bash
 wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
 tar -xvf vx.x.x.tar.gz
-
 cd cess-nodeadm-x.x.x
-
 ./install.sh --skip-dep
 ```
 
 ## 拉取镜像
 
 ```bash
-cess pullimg
+sudo cess pullimg
 ```
