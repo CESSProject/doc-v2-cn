@@ -111,8 +111,10 @@ df -h
 
 - **收益账户**：用于接收挖矿获得的奖励。
 - **质押账户**：用于支付存储节点的质押费用。
-- **签名账户**：用*于签名区块链交易。 如果没有指定质押账户，该账户也将用于支付质押费用。
+- **签名账户**：用于签名区块链交易。 如果没有指定质押账户，该账户也将用于支付质押费用。
 - **存储矿工保证金**：为了确保存储节点矿工遵守其服务承诺，矿工账户将锁定其本机代币，以提供承诺的存储空间。目前在测试网上，每 TB 的存储空间需要锁定 4,000 TCESS。承诺的空间将四舍五入到最接近的 TB 单位，并锁定该数量乘以 4,000 TCESS。最小锁定代币也为 4,000 TCESS。
+
+**注意：每个签名账户作为节点入网的唯一标识，仅能给一个存储矿工程序使用，否则将引发异常**
 
 请参阅 [创建 CESS 帐户](../community/cess-account.md) 了解如何创建 CESS 帐户，然后前往 [CESS 水龙头](https://cess.cloud/faucet.html) 获取测试代币 TCESS，或 [联系我们](../introduction/contact.md) 获取帮助。
 
@@ -173,12 +175,12 @@ sudo cess config set
 Enter cess node mode from 'authority/storage/watcher': storage
 Enter cess storage listener port (current: 15001, press enter to skip):
 Enter cess storage earnings account: # 输入账户以获得奖励，账户应以 "c..." 开头。
-Enter cess storage staking signature phrase: # 请输入您的质押账户助记词
+Enter cess storage signature phrase: # 请输入您的签名账户助记词
 Enter cess storage disk path: # 存储硬盘路径
 Enter cess storage space, by GB unit (current: 300, press enter to skip):
 Enter the number of CPU cores used for mining; Your CPU cores are 4
   (current: 3, 0 means all cores are used; press enter to skip):
-Enter the staker\'s payment account if you have one (press enter to skip): # 你的质押帐户
+Enter the staker\'s payment account if you have another one (if it is the same as the signature account,press enter to skip): # 您指定的其他质押帐户
 Enter the reserved TEE worker endpoints (separate multiple values with commas, press enter to skip):
 Set configurations successfully
 ```
