@@ -81,14 +81,14 @@ Value bonded：至少 3,000,000 TCESS。在 _payment destination_ 选择第二�
 `cess-nodeadm` 是一个 CESS 节点部署和管理程序，有助于部署和管理存储节点、共识节点和全节点，以简化所有 CESS 矿工的开发运营。
 
 ```bash
-wget https://github.com/CESSProject/cess-nodeadm/archive/v0.5.1.tar.gz
-tar -xvf v0.5.1.tar.gz
-cd cess-nodeadm-0.5.1
+wget https://github.com/CESSProject/cess-nodeadm/archive/refs/tags/v0.5.4.tar.gz
+tar -xvf v0.5.4.tar.gz
+cd cess-nodeadm-0.5.4
 sudo ./install.sh
 ```
 
 {% hint style="info" %}
-请检查您是否使用的是[最新版本的 `cess-nodeadm`](https://github.com/CESSProject/cess-nodeadm/tags)。目前是 **v0.5.1**。
+请检查您是否使用的是[最新版本的 `cess-nodeadm`](https://github.com/CESSProject/cess-nodeadm/tags)。目前是 **v0.5.4**。
 {% endhint %}
 
 如果出现 `Install cess nodeadm success` 消息，则表示安装成功。
@@ -100,7 +100,7 @@ sudo ./install.sh
 运行:
 
 ```bash
-cess config set
+sudo cess config set
 ```
 
 下面是以 **Full** 身份运行矿工的操作示例:
@@ -114,18 +114,17 @@ Begin install sgx_enable ...
 Intel SGX is already enabled on this system
 Enter cess node name (current: cess, press enter to skip): cess
 Enter cess chain ws url (default: ws://cess-chain:9944):
-Enter listener port for kaleido (current: 10010, press enter to skip):
-Start configuring the endpoint to access kaleido from the Internet
+Enter the public port for TEE worker (current: 19999, press enter to skip): 
+Start configuring the endpoint to access TEE worker from the Internet
   Try to get your external IP ...
 
 ## 此步骤会自动检测您机器IP，若自动检测不正确请您将正确的http://ip:port填入，其中port为上一步您设置的值，当然您也可以将endpoint设置为域名。
-Enter the kaleido endpoint (current: http://221.122.79.3:10010, press enter to skip):
+Enter the TEE worker endpoint (current: http://xx.xxx.xx.xx:19999, press enter to skip):
 
 ## current 为 null 代表为空，当您想成为Marker的时候可以直接回车跳过
 Enter cess validator stash account (current: null, press enter to skip): cXic3WhctsJ9cExmjE9vog49xaLuVbDLcFi2odeEnvV5Sbq4f
 Enter what kind of tee worker would you want to be [Full/Verifier]: Full
 Enter cess validator controller phrase: xxxxxxxxxxxxxx
-❤️  Help us improve TEE Worker with anonymous crash reports & basic usage data? (y/n) : y
 Set configurations successfully
 Start generate configurations and docker compose file
 debug: Loading config file: config.yaml
@@ -143,23 +142,23 @@ fe59e467d907: Pull complete
 Digest: sha256:39821a9755ecc0c8901809e8a29454ec618ac73592818d3829abdf73ded4e89e
 Status: Downloaded newer image for cesslab/cess-chain:testnet
 docker.io/cesslab/cess-chain:testnet
-download image: cesslab/kaleido:testnet
-testnet: Pulling from cesslab/kaleido
+download image: cesslab/ceseal:testnet
+testnet: Pulling from cesslab/ceseal
 01085d60b3a6: Already exists
 75b070fa4d64: Already exists
 e0b98820ba1b: Pull complete
 28557caa1da0: Pull complete
 Digest: sha256:6d5c7b74a98208acc8a10ab833eef6c9a6977ed9b82e98aa08cdba732dd5ac05
-Status: Downloaded newer image for cesslab/kaleido:testnet
-docker.io/cesslab/kaleido:testnet
-download image: cesslab/kaleido-rotator:testnet
-testnet: Pulling from cesslab/kaleido-rotator
+Status: Downloaded newer image for cesslab/ceseal:testnet
+docker.io/cesslab/ceseal:testnet
+download image: cesslab/cifrost:testnet
+testnet: Pulling from cesslab/cifrost
 96526aa774ef: Already exists
 5c097a021ba1: Already exists
 ff32bfaa56d6: Pull complete
 Digest: sha256:7b0b1c04942d92cd69cac2a01f29ea7a889f9c5784c6af847152b8818fc946e5
-Status: Downloaded newer image for cesslab/kaleido-rotator:testnet
-docker.io/cesslab/kaleido-rotator:testnet
+Status: Downloaded newer image for cesslab/cifrost:testnet
+docker.io/cesslab/cifrost:testnet
 pull images finished
 ```
 配置终端节点时请填入您的TEE Worker服务器地址，默认是当前服务器，如果您还不清楚TEE Worker，请参考[节点角色介绍](../concepts/node-roles.md)。
@@ -286,8 +285,8 @@ $ cess status
 
 -----------------------------------------
  NAMES           STATUS
-kld-agent       Up 2 minutes
-kld-sgx         Up 2 minutes
+cifrost         Up 2 minutes
+ceseal          Up 2 minutes
 chain           Up 2 minutes
 watchtower      Up 2 minutes
 -----------------------------------------
@@ -333,7 +332,7 @@ cd cess-nodeadm-<new-version>
 ./install.sh --skip-dep
 ```
 
-目前 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags) 为 **v0.7.6**。
+目前 [最新版本](https://github.com/CESSProject/cess-nodeadm/tags) 为 **v0.5.4**。
 
 ## 拉取镜像
 
@@ -366,11 +365,11 @@ cess pullimg
    在程序完全启动成功后，会有一个`watchtower`的服务代替用户代替用户管理本地服务，当CESS官方对某个组件进行更新的时候，`watchtower`将会拉取最新的程序自动升级，如果您不想使用自动升级功能，您可以在进行`cess config set`之前，使用如下命令禁止自动更新。
 
    ``` bash
-   ## 禁止更新 kld-sgx 服务，当您选择禁止自动更新kld-sgx而选择手动更新时，更新过程中请删除 /opt/cess/authority/kaleido/key/encrypted/podr2_key 内文件。
-   cess tools no_watchs kld-sgx
+   ## 禁止更新 ceseal 服务。
+   cess tools no_watchs ceseal
 
-   ## 禁止更新 kld-agent 服务
-   cess tools no_watchs kld-agent
+   ## 禁止更新 cifrost 服务
+   cess tools no_watchs cifrost
    ```
 
    您的每一次自动升级都意味着官方对共识矿工程序的bug修复，我们**非常不建议**您关闭自动升级功能，这可能导致您的服务**不可用**！
