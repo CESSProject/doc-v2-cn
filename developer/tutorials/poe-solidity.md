@@ -48,9 +48,6 @@ pnpm install -D hardhat-deploy
 
 初始情况下，Hardhat 放置了一智能合约 **Lock.sol** 在 `hardhat/contracts` 目录中。通过运行`pnpm hardhat test` 检查一切是否正常，并查看所有测试用例是否通过。
 
-If you have any issues, refer back to the [`hardhat` directory](https://github.com/CESSProject/cess-examples/tree/main/hardhat), its [`package.json`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/package.json), and [`hardhat.config.ts`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/hardhat.config.ts).
-
-
 如果您有任何问题，请查看 [`hardhat`目录](https://github.com/CESSProject/cess-examples/tree/main/hardhat) 及其配置 [`package.json`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/package.json)，和 [`hardhat.config.ts`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/hardhat.config.ts) 档案。
 
 ## 开发
