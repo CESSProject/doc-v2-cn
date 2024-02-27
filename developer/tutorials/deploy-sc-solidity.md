@@ -68,7 +68,7 @@
 # 使用 Remix IDE 部署合约
 
 {% hint style="info" %}
-你可以使用 [智能合约范例](https://github.com/CESSProject/cess-course/tree/main/examples/hardhat) 里其中一份进行部署。
+你可以使用 [智能合约范例](https://github.com/CESSProject/cess-examples/tree/main/hardhat) 里其中一份进行部署。
 {% endhint %}
 
 打开 [Remix IDE](https://remix.ethereum.org/) 并转到 **File explorer**。

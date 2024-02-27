@@ -8,7 +8,7 @@
 
 # 开发代码
 
-教程代码存在于 [**cess-course** Github repo](https://github.com/CESSProject/cess-course/tree/main/examples/js) 中，我们将在本教程中一起浏览这些代码。
+教程代码存在于 [**cess-examples** Github repo](https://github.com/CESSProject/cess-examples/tree/main/js) 中，我们将在本教程中一起浏览这些代码。
 
 教程代码将执行以下操作：
 
@@ -76,7 +76,7 @@ interface CESSConfig {
 
 ## 使用 Space 服务
 
-我们首先来看一下 [`checkNRentSpace()` 函数](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/js/src/index.ts#L57)。
+我们首先来看一下 [`checkNRentSpace()` 函数](https://github.com/CESSProject/cess-examples/tree/main/js/src/index.ts#L57)。
 
 ```ts
 async function checkNRentSpace(space: Space, common: Common) {
@@ -157,7 +157,7 @@ buySpace(mnemonic: string, gibCount: number): Promise<any>
 
 我们通过 **Bucket** 服务来查询用户创建的 Bucket 信息（类似于我们本地硬盘中的目录的概念）、创建 Bucket、删除 Bucket。
 
-我们看一下 [`checkNCreateBucket()` 函数](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/js/src/index.ts#L73)。
+我们看一下 [`checkNCreateBucket()` 函数](https://github.com/CESSProject/cess-examples/tree/main/js/src/index.ts#L73)。
 
 ```ts
 async function checkNCreateBucket(bucket: Bucket) {
@@ -214,7 +214,7 @@ async function checkNCreateBucket(bucket: Bucket) {
 
 ## 使用 File 服务
 
-让我们看看如何查询我们上传的文件。现在查看代码 [`uploadNDownloadFile()函数`](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/js/src/index.ts#L93):
+让我们看看如何查询我们上传的文件。现在查看代码 [`uploadNDownloadFile()函数`](https://github.com/CESSProject/cess-examples/tree/main/js/src/index.ts#L93):
 
 ```ts
 async function uploadNDownloadFile(fileService: File) {

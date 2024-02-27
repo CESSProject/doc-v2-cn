@@ -10,10 +10,10 @@
 
 {% hint style="success" %}
 
-本教程的完整代码可在 [代码库](https://github.com/CESSProject/cess-course/tree/main/examples) 查看。
+本教程的完整代码可在 [代码库](https://github.com/CESSProject/cess-examples/tree/main) 查看。
 
-- 智能合约部分，位于 [`examples/ink/poe` 目录](https://github.com/CESSProject/cess-course/tree/main/examples/ink/poe).
-- 前端部分，位于 [`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceInk.js).
+- 智能合约部分，位于 [`ink/poe` 目录](https://github.com/CESSProject/cess-examples/tree/main/ink/poe).
+- 前端部分，位于 [`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceInk.js).
 
 {% endhint %}
 
@@ -292,7 +292,7 @@
     }
     ```
 
-10. 至此，您已经完成了智能合约的所有核心逻辑。编译合约 `cargo contract build` 以确保其能构建。如果对最终的源代码有任何疑问，您可以随时参考[完整的源代码](https://github.com/CESSProject/cess-course/blob/main/examples/ink/poe/lib.rs)。
+10. 至此，您已经完成了智能合约的所有核心逻辑。编译合约 `cargo contract build` 以确保其能构建。如果对最终的源代码有任何疑问，您可以随时参考[完整的源代码](https://github.com/CESSProject/cess-examples/blob/main/ink/poe/lib.rs)。
 
 11. 编译完成后，将合约 [部署到本地的 CESS 开发节点上](./deploy-sc-ink.md) 并与合约交互以对其进行测试。您可以访问 [Contracts UI](https://contracts-ui.substrate.io/)，将其连接到本地节点，然后部署合约。请参阅下面的屏幕截图。<br/>
 
@@ -335,9 +335,9 @@ pnpm start    # start the project
 
 ## 在开始之前
 
-首先，如果有任何疑问，您可以随时查阅[**完整的前端源代码**](https://github.com/CESSProject/cess-course/tree/main/examples/frontend)。
+首先，如果有任何疑问，您可以随时查阅[**完整的前端源代码**](https://github.com/CESSProject/cess-examples/tree/main/frontend)。
 
-为了对前端模板有一个概括性的理解，我们可参考 [`src/App.js` 的下半部分](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/App.js#L51)：
+为了对前端模板有一个概括性的理解，我们可参考 [`src/App.js` 的下半部分](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/App.js#L51)：
 
 ```jsx
 function Main() {
@@ -437,7 +437,7 @@ function Main() {
     )
     ```
 
-    [`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceInk.js) 如下所示:
+    [`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceInk.js) 如下所示:
 
     ```jsx
     import { React, useState } from "react";
@@ -451,9 +451,9 @@ function Main() {
 
 3. 从现在开始，我们将主要关注在文件 `src/ProofOfExistenceInk.js`。我们不会在这里逐行添加代码，但我们会介绍 **useink** 库提供的 API，以方便与 ink！智能合约交互。
 
-    参考代码：[`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceInk.js)
+    参考代码：[`src/ProofOfExistenceInk.js`](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceInk.js)
 
-4. 从 [文件底部](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L194-L201) 开始，我们有：
+4. 从 [文件底部](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceInk.js#L194-L201) 开始，我们有：
 
     ```jsx
     <UseInkProvider
@@ -474,7 +474,7 @@ function Main() {
 
     透过 `UseInkProvider`，我们可以在 `<ProofOfExistenceInk />` 组件内调用 ink! 的 API 函数。
 
-5. 在 [`function ProofOfExistenceInk(props) {...}`](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceInk.js#L31) 代码中来看：
+5. 在 [`function ProofOfExistenceInk(props) {...}`](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceInk.js#L31) 代码中来看：
 
     ```jsx
     // NOTE: In `examples/poe-ink/contract` directory, compile your contract with

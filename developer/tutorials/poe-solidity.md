@@ -6,10 +6,10 @@
 
 {% hint style="success" %}
 
-本教程的完整源代码可以在我们的 [`cess-course` 代码库](https://github.com/CESSProject/cess-course/tree/main/examples) 查看.
+本教程的完整源代码可以在我们的 [`cess-examples` 代码库](https://github.com/CESSProject/cess-examples/tree/main) 查看.
 
-- [智能合约](https://github.com/CESSProject/cess-course/blob/main/examples/hardhat/contracts/ProofOfExistence.sol)
-- [前端](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceSolidity.js)
+- [智能合约](https://github.com/CESSProject/cess-examples/blob/main/hardhat/contracts/ProofOfExistence.sol)
+- [前端](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceSolidity.js)
 
 {% endhint %}
 
@@ -48,10 +48,10 @@ pnpm install -D hardhat-deploy
 
 初始情况下，Hardhat 放置了一智能合约 **Lock.sol** 在 `hardhat/contracts` 目录中。通过运行`pnpm hardhat test` 检查一切是否正常，并查看所有测试用例是否通过。
 
-If you have any issues, refer back to the [`hardhat` directory](https://github.com/CESSProject/cess-course/tree/main/examples/hardhat), its [`package.json`](https://github.com/CESSProject/cess-course/blob/main/examples/hardhat/package.json), and [`hardhat.config.ts`](https://github.com/CESSProject/cess-course/blob/main/examples/hardhat/hardhat.config.ts).
+If you have any issues, refer back to the [`hardhat` directory](https://github.com/CESSProject/cess-examples/tree/main/hardhat), its [`package.json`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/package.json), and [`hardhat.config.ts`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/hardhat.config.ts).
 
 
-如果您有任何问题，请查看 [`hardhat`目录](https://github.com/CESSProject/cess-course/tree/main/examples/hardhat) 及其配置 [`package.json`](https://github.com/CESSProject/cess-course/blob/main/examples/hardhat/package.json)，和 [`hardhat.config.ts`](https://github.com/CESSProject/cess-course/blob/main/examples/hardhat/hardhat.config.ts) 档案。
+如果您有任何问题，请查看 [`hardhat`目录](https://github.com/CESSProject/cess-examples/tree/main/hardhat) 及其配置 [`package.json`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/package.json)，和 [`hardhat.config.ts`](https://github.com/CESSProject/cess-examples/blob/main/hardhat/hardhat.config.ts) 档案。
 
 ## 开发
 
@@ -206,7 +206,7 @@ If you have any issues, refer back to the [`hardhat` directory](https://github.c
 - 安装 [pnpm](https://pnpm.io/installation)
 - 运行 CESS 节点的本地开发链，因为前端将连接到本地 CESS链。请 [参阅此处](./deploy-sc-ink.md#deploy-a-smart-contract) 了解如何运行本地 CESS 链。
 
-完整的前端源代码可以在 [这里看到](https://github.com/CESSProject/cess-course/tree/main/examples/frontend)。
+完整的前端源代码可以在 [这里看到](https://github.com/CESSProject/cess-examples/tree/main/frontend)。
 
 如果运行它，您将在右下角看到 **存在性证明（Solidity）小部件**：
 
@@ -214,13 +214,13 @@ If you have any issues, refer back to the [`hardhat` directory](https://github.c
 
 ## 开发
 
-前端的开发主要位于 `frontend/src/ProofOfExistenceSolidity.js`，如下[所示](https://github.com/CESSProject/cess-course/blob/main/examples/frontend/src/ProofOfExistenceSolidity.js)。
+前端的开发主要位于 `frontend/src/ProofOfExistenceSolidity.js`，如下[所示](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceSolidity.js)。
 
 我们不会在此逐行列出前端代码，但会指出具体实现了的功能。
 
 - 我们正在使用 React Hooks 的 [**wagmi**](https://wagmi.sh/) 库来与以 EVM 智能合约配合使用。
 
-- 要使用 wagmi，我们将 CESS 本地链定义[在这里](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceSolidity.js#L22-L38)：
+- 要使用 wagmi，我们将 CESS 本地链定义[在这里](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceSolidity.js#L22-L38)：
 
 
     ```js
@@ -271,9 +271,9 @@ If you have any issues, refer back to the [`hardhat` directory](https://github.c
     }
     ```
 
-- 为了连接到我们的以太坊钱包，我们使用 [`useConnect()`](https://wagmi.sh/react/hooks/useConnect) hook，其将在 [**ConnectWallet**](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceSolidity.js#L180) 组件中被调用。
+- 为了连接到我们的以太坊钱包，我们使用 [`useConnect()`](https://wagmi.sh/react/hooks/useConnect) hook，其将在 [**ConnectWallet**](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceSolidity.js#L180) 组件中被调用。
 
-- 我们通过[`useAccount()`](https://wagmi.sh/react/hooks/useAccount) 和 [`useBalance()`](https://wagmi.sh/react/hooks/useBalance) hooks 获取当前所选账户的信息及其余额，这两个 hook 也将用于[**PoESolidity** 组件](https://github.com/CESSProject/cess-course/blob/308ec7fe053e92c08e4c2d634579f84b359072ac/examples/frontend/src/ProofOfExistenceSolidity.js#L65)。
+- 我们通过[`useAccount()`](https://wagmi.sh/react/hooks/useAccount) 和 [`useBalance()`](https://wagmi.sh/react/hooks/useBalance) hooks 获取当前所选账户的信息及其余额，这两个 hook 也将用于[**PoESolidity** 组件](https://github.com/CESSProject/cess-examples/blob/main/frontend/src/ProofOfExistenceSolidity.js#L65)。
 
 - 我们使用 [`useContractRead()`](https://wagmi.sh/react/hooks/useContractRead)读取合约数据。这里需要注意的一点是我们需要指定 `account` 参数，以便在智能合约端设置好 `msg.sender`值。
 
