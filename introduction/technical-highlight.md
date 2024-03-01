@@ -19,7 +19,7 @@ CESS 网络通过智能空间管理聚合了全球存储节点贡献的存储空
 ## 5. 兼容 IPFS
 
 {% hint style="info" %}
-计划 2024 年发布
+计划 2024 年第 4 季度发布
 {% endhint %}
 
 CESS 兼容 IPFS 标准，允许开发者将他们的 dApp 与使用 IPFS 的各种存储解决方案集成。在 CESS 上存储的数据也可以通过加密哈希进行寻址，使内容不可变且防篡改。
@@ -27,7 +27,7 @@ CESS 兼容 IPFS 标准，允许开发者将他们的 dApp 与使用 IPFS 的各
 ## 6. 安全的数据访问
 
 {% hint style="info" %}
-计划 2024 年发布
+计划 2024 年第 3 季度发布
 {% endhint %}
 
 代理重加密技术（PReT）建立在公钥加密之上，允许用户在不泄露数据内容的前提下授权他人解密权限。用户数据均在存储节点内的[受信任执行环境](https://en.wikipedia.org/wiki/Trusted_execution_environment)（TEE）中进行处理和访问。
@@ -35,7 +35,7 @@ CESS 兼容 IPFS 标准，允许开发者将他们的 dApp 与使用 IPFS 的各
 ## 7. 高效、快速的数据检索
 
 {% hint style="info" %}
-计划 2024 年发布
+计划 2025 年发布
 {% endhint %}
 
 通过数据索引和去中心化内容分发网络层（DCDN），对缓存矿工和检索矿工进行科学有效激励，实现毫秒级数据检索和返还，从而改善用户端点的搜索和下载速度。共识机制在 [Polkadot GRANDPA](https://wiki.polkadot.network/docs/learn-consensus#finality-gadget-grandpa) 之上进行了迭代，实现更低的 gas 费用和更高的交易处理速度。
@@ -43,7 +43,7 @@ CESS 兼容 IPFS 标准，允许开发者将他们的 dApp 与使用 IPFS 的各
 ## 8. 数据所有权的可追溯性
 
 {% hint style="info" %}
-计划將來年发布
+计划 2024 年第 4 季度发布
 {% endhint %}
 
 数据所有权可以通过多类型数据确权机制（MDRC）进行验证。该协议从所有数据中提取指纹，并永久地将它们存储在链上的智能合约中，以实现数据的可追溯性。
