@@ -29,26 +29,30 @@ Docker 安装请参考[官方文档](https://docs.docker.com/engine/install/)。
 ufw allow 4001
 ```
 
-## 硬盘挂载
+## 硬盘分区与挂载
+
+通过 `fdisk` 或 `lvm` 配置节点的存储目录
+
+### fdisk 存储管理
 
 使用以下命令检查硬盘状态`df -h`：
 
 ```bash
-$ df -h
+df -h
 ```
 
 如果该磁盘并未挂载，则不会在存储挖矿中被使用上。使用以下命令查看硬盘是否已挂载：
 
 ```bash
-$ fdisk -l
-
-Disk /dev/vdb: 200 GiB, 214748364800 bytes, 419430400 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
-Disklabel type: dos
-Disk identifier: 0x331195d1
+fdisk -l
 ```
+
+>Disk /dev/vdb: 200 GiB, 214748364800 bytes, 419430400 sectors  
+Units: sectors of 1 * 512 = 512 bytes  
+Sector size (logical/physical): 512 bytes / 512 bytes  
+I/O size (minimum/optimal): 512 bytes / 512 bytes  
+Disklabel type: dos  
+Disk identifier: 0x331195d1
 
 由上述可知，未挂载的硬盘为 `/dev/vdb`。我们将用来 `/dev/vdb` 演示，安装操作如下。
 
@@ -69,7 +73,7 @@ w
 将新划分的磁盘格式化为 `ext4` 格式：
 
 ```bash
-mkfs.ext4 /dev/vdb
+sudo mkfs.ext4 /dev/vdb
 ```
 
 如果系统要求进一步输入，请输入 `y` 继续：
@@ -81,8 +85,8 @@ Proceed anyway? (y,N) y
 创建 `/cess` 目录来挂载磁盘。这里用 `/cess` 目录作为例子：
 
 ```bash
-mkdir /cess
-echo "/dev/vdb /cess ext4 defaults 0 0" >> /etc/fstab
+sudo mkdir /cess
+sudo echo "/dev/vdb /cess ext4 defaults 0 0" >> /etc/fstab
 ```
 
 将 `/dev/vdb` 替换为您自己的磁盘名称。 命令中的 `/cess` 必须与上一步中创建的相同。如果您没有 root 权限，请尝试：
@@ -91,7 +95,7 @@ echo "/dev/vdb /cess ext4 defaults 0 0" >> /etc/fstab
 echo "/dev/vdb /cess ext4 defaults 0 0" | sudo tee -a /etc/fstab
 ```
 
-安装 `/cess`：
+挂载文件系统到 `/cess`：
 
 ```bash
 mount -a
@@ -104,6 +108,79 @@ df -h
 ```
 
 如果 `/cess` 出现则说明磁盘挂载成功。
+
+### lvm 存储管理
+
+查看系统上的所有存储盘。
+```bash
+lsblk
+```
+>NAME                                    MAJ:MIN RM   SIZE     RO TYPE MOUNTPOINTS  
+sda                                       8:0    0    5.5T     0  disk  
+sdb                                       8:16   0    5.5T     0  disk   
+sdc                                       8:128  0    558.9G   0  disk  
+├─sdc1                                    8:129  0    1G       0  part /boot/efi  
+└─sdc2                                    8:130  0    557.9G   0  part /
+
+如上所示，共有 2 块大小为 5.5T 的硬盘
+
+使用 `pvcreate` 命令创建物理卷，多个存储盘需要使用空格间隔
+```bash
+sudo pvcreate /dev/sda /dev/sdb
+```
+
+使用 `vgcreate` 命令创建名为 `vg_cess_storage_miner` 的卷组
+```bash
+sudo vgcreate vg_cess_storage_miner /dev/sda /dev/sdb
+```
+
+查看已创建的卷组信息
+```bash
+sudo vgs
+```
+
+使用 `lvcreate` 命令创建逻辑卷，用户根据自己的实际情况配置逻辑卷的大小
+```bash
+# 将 卷组 的所有存储空间共 11T 都用来创建一个名为：lv_cess_storage_node 的逻辑卷
+lvcreate -l 100%FREE -n lv_cess_storage_node vg_cess_storage_miner
+
+or
+
+# 创建一个名为：lv_cess_storage_node 且大小为 10T 的逻辑卷
+lvcreate -L 10t -n lv_cess_storage_node vg_cess_storage_miner
+```
+
+查看创建的逻辑卷
+```bash 
+sudo lvdisplay
+```
+
+在逻辑卷上创建文件系统
+```bash
+sudo mkfs.ext4 /dev/vg_cess_storage_miner/lv_cess_storage_node
+```
+
+创建新挂载点，例如 /cess
+```bash
+sudo mkdir /cess
+```
+
+将文件系统挂载至挂载点
+```bash
+sudo mount /dev/vg_cess_storage_miner/lv_cess_storage_node /cess
+```
+
+查看逻辑卷的挂载结果
+```bash
+df -h
+```
+
+配置启动自动挂载
+```bash
+sudo cp /etc/fstab /etc/fstab.backup
+sudo sh -c "echo `blkid /dev/vg_cess_storage_miner/lv_cess_storage_node | awk '{print $2}' | sed 's/\"//g'` /cess ext4 defaults 0 0 >> /etc/fstab"
+```
+
 
 # 准备 CESS 账户
 
@@ -120,19 +197,19 @@ df -h
 
 # 安装 CESS 客户端
 
-1. 到这里检查最新的版本：<https://github.com/CESSProject/cess-nodeadm/tag>
+1. 到这里检查最新的版本：<https://github.com/CESSProject/cess-nodeadm/tags>
 
 2. 下载并安装
 
    ```bash
-   wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
-   tar -xvf vx.x.x.tar.gz
+   sudo wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
+   sudo tar -xvf vx.x.x.tar.gz
    cd cess-nodeadm-x.x.x/
-   ./install.sh
+   sudo ./install.sh
    ```
 
    {% hint style="info" %}
-   ⚠️ 用最新版本（截至目前为止为 **0.5.3**）替换上述的 `x.x.x`。
+   ⚠️ 用最新版本（截至目前为止为 **0.5.4**）替换上述的 `x.x.x`。
    {% endhint %}
 
    如果最末一句出现消息 `Install cess nodeadm success`，则表示安装成功。
@@ -146,7 +223,7 @@ df -h
 ```bash
 sudo cess stop
 # 或者
-cess down
+sudo cess down
 ```
 
 移除已有的服务：
@@ -171,19 +248,19 @@ sudo cess profile testnet
 
 ```bash
 sudo cess config set
-
-Enter cess node mode from 'authority/storage/watcher': storage
-Enter cess storage listener port (current: 15001, press enter to skip):
-Enter cess storage earnings account: # 输入账户以获得奖励，账户应以 "c..." 开头。
-Enter cess storage signature phrase: # 请输入您的签名账户助记词
-Enter cess storage disk path: # 存储硬盘路径
-Enter cess storage space, by GB unit (current: 300, press enter to skip):
-Enter the number of CPU cores used for mining; Your CPU cores are 4
-  (current: 3, 0 means all cores are used; press enter to skip):
-Enter the staker\'s payment account if you have another one (if it is the same as the signature account,press enter to skip): # 您指定的其他质押帐户
-Enter the reserved TEE worker endpoints (separate multiple values with commas, press enter to skip):
-Set configurations successfully
 ```
+>Enter cess node mode from 'authority/storage/watcher': storage  
+Enter cess storage listener port (current: 15001, press enter to skip):  
+Enter cess storage earnings account: # 输入账户以获得奖励，账户应以 "c..." 开头。  
+Enter cess storage signature phrase: # 请输入您的签名账户助记词  
+Enter cess storage disk path: # 存储硬盘路径  
+Enter cess storage space, by GB unit (current: 300, press enter to skip):  
+Enter the number of CPU cores used for mining; Your CPU cores are 4  
+  (current: 3, 0 means all cores are used; press enter to skip):  
+Enter the staker\'s payment account if you have another one (if it is the same as the signature account,press enter to skip): # 您指定的其他质押帐户  
+Enter the reserved TEE worker endpoints (separate multiple values with commas, press enter to skip):  
+Set configurations successfully
+
 
 - 如果提供了质押付款账户，对于测试网，承诺的空间（输入 **Enter cess storage space** 的答案）将 **四舍五入** 到最接近的 TB 单位，并将该数量乘以 4,000 个 TCESS 作为矿工押金进行锁定。
 - 如果未提供质押付款账户，则会要求提供另一个账户，即签名账户，并将从该账户锁定代币。
@@ -192,13 +269,13 @@ Set configurations successfully
 启动 CESS bucket
 
 ```bash
-$ cess start
-
-[+] Running 3/0
- ✔ Container chain       Running                                                0.0s
- ✔ Container bucket      Running                                                0.0s
- ✔ Container watchtower  Running                                                0.0s
+sudo cess start
 ```
+>[+] Running 3/0  
+ ✔ Container chain       Running                                                0.0s  
+ ✔ Container bucket      Running                                                0.0s  
+ ✔ Container watchtower  Running                                                0.0s  
+
 
 如果您想加快存储矿工获取收益的速度，可以选择部署Marker型TEE Worker来帮助矿工认证空间和为服役文件打标，请参阅[TEE Worker用户指南](./teeworker.md)
 
@@ -207,7 +284,7 @@ $ cess start
 ## 检查 CESS 链同步状态
 
 ```bash
-docker logs chain
+sudo docker logs chain
 ```
 
 如下图所示，如果我们在 [CESS 浏览器](https://testnet.cess.cloud/) 中看到 “best” 对应的区块高度约为最新高度，则说明本地链节点同步完成。
@@ -239,7 +316,7 @@ docker logs chain
 ## 查看存储节点日志
 
 ```bash
-docker logs bucket
+sudo docker logs bucket
 ```
 
 如下图，看到 `/kldr-testnet` 表示网络环境是测试网络，看到 `Connected to the bootstrap node...` 表示有和 bootstrap 节点的连接。
@@ -249,7 +326,7 @@ docker logs bucket
 ## 查看存储桶状态
 
 ```bash
-cess bucket stat
+sudo cess bucket stat
 ```
 
 返回结果示例如下：
@@ -263,6 +340,8 @@ At the beginning of the storage node synchronization, all your  are 0. It is onl
 在存储节点同步开始时，所有您的 **validated space** (已验证空间), **used space** (已使用空间), 及 **locked space** (已锁定空间) 都为 0。只有当已验证空间增加到大于 0 时，存储矿工才开始赚取奖励。对于测试网，在存储节点链同步完成后大约需要一个小时，将开始验证存储节点空间。如下所示。
 
 ![CESS 存储桶内已验证空间的统计](../assets/storage-miner/running/bucket-stat-validated-space.png)
+
+如果容器运行正常且命令返回结果为 `You are not a storage node` , 请耐心等待节点同步完成
 
 ## 增加质押
 
@@ -336,10 +415,10 @@ sudo cess purge
 ## 更新 `cess-nodeadm`
 
 ```bash
-wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
-tar -xvf vx.x.x.tar.gz
+sudo wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
+sudo tar -xvf vx.x.x.tar.gz
 cd cess-nodeadm-x.x.x
-./install.sh --skip-dep
+sudo ./install.sh --skip-dep
 ```
 
 ## 拉取镜像
