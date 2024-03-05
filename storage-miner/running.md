@@ -31,9 +31,6 @@ ufw allow 4001
 
 ## 硬盘分区与挂载
 
-通过 `fdisk` 或 `lvm` 配置节点的存储目录
-
-### fdisk 存储管理
 
 使用以下命令检查硬盘状态`df -h`：
 
@@ -108,78 +105,6 @@ df -h
 ```
 
 如果 `/cess` 出现则说明磁盘挂载成功。
-
-### lvm 存储管理
-
-查看系统上的所有存储盘。
-```bash
-lsblk
-```
->NAME                                    MAJ:MIN RM   SIZE     RO TYPE MOUNTPOINTS  
-sda                                       8:0    0    5.5T     0  disk  
-sdb                                       8:16   0    5.5T     0  disk   
-sdc                                       8:128  0    558.9G   0  disk  
-├─sdc1                                    8:129  0    1G       0  part /boot/efi  
-└─sdc2                                    8:130  0    557.9G   0  part /
-
-如上所示，共有 2 块大小为 5.5T 的硬盘
-
-使用 `pvcreate` 命令创建物理卷，多个存储盘需要使用空格间隔
-```bash
-sudo pvcreate /dev/sda /dev/sdb
-```
-
-使用 `vgcreate` 命令创建名为 `vg_cess_storage_miner` 的卷组
-```bash
-sudo vgcreate vg_cess_storage_miner /dev/sda /dev/sdb
-```
-
-查看已创建的卷组信息
-```bash
-sudo vgs
-```
-
-使用 `lvcreate` 命令创建逻辑卷，用户根据自己的实际情况配置逻辑卷的大小
-```bash
-# 将 卷组 的所有存储空间共 11T 都用来创建一个名为：lv_cess_storage_node 的逻辑卷
-lvcreate -l 100%FREE -n lv_cess_storage_node vg_cess_storage_miner
-
-or
-
-# 创建一个名为：lv_cess_storage_node 且大小为 10T 的逻辑卷
-lvcreate -L 10t -n lv_cess_storage_node vg_cess_storage_miner
-```
-
-查看创建的逻辑卷
-```bash 
-sudo lvdisplay
-```
-
-在逻辑卷上创建文件系统
-```bash
-sudo mkfs.ext4 /dev/vg_cess_storage_miner/lv_cess_storage_node
-```
-
-创建新挂载点，例如 /cess
-```bash
-sudo mkdir /cess
-```
-
-将文件系统挂载至挂载点
-```bash
-sudo mount /dev/vg_cess_storage_miner/lv_cess_storage_node /cess
-```
-
-查看逻辑卷的挂载结果
-```bash
-df -h
-```
-
-配置启动自动挂载
-```bash
-sudo cp /etc/fstab /etc/fstab.backup
-sudo sh -c "echo `blkid /dev/vg_cess_storage_miner/lv_cess_storage_node | awk '{print $2}' | sed 's/\"//g'` /cess ext4 defaults 0 0 >> /etc/fstab"
-```
 
 
 # 准备 CESS 账户
