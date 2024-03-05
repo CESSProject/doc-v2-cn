@@ -222,7 +222,7 @@ docker logs chain
 
 1. 前往 [**Polkadot-js Apps**: Developer > Chain state](https://polkadot.js.org/apps/#/chainstate)
 2. 在 *selected state query*: 中选择 **sminer** 模块和 **allMiner()** 存储项
-3. 单击左侧按钮查询状态
+3. 单击右侧按钮查询状态
 4. 在返回的列表底部，您应该找到您的矿工地址，该地址是从您回答 `sudo cess config set` 生成的助记词（带有根路径）生成的。参见下图示例。
 
    ![查询 CESS 的所有矿工](../assets/storage-miner/running/query-allminer.png)
