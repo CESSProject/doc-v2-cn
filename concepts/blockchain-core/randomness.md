@@ -14,7 +14,7 @@ CESS 使用的 VRF 与 [*Ouroboros Praos*](https://eprint.iacr.org/2017/573.pdf)
 
 # 工作原理
 
-Slot 是长度为 6 秒的离散时间单位。每个 slot 可以包含一个区块，但也可能不包含。Slot 组成了epoch - 在 CESS 上，2400 个 slot 组成一个 epoch，这使得 epoch 的长度为 4 个小时。
+Slot 是长度为 6 秒的离散时间单位。每个 slot 可以包含一个区块，但也可能不包含。Slot 组成了epoch - 在 CESS 上， 600 个 slot 组成一个 epoch，这使得 epoch 的长度为 1 个小时。
 
 在每个 slot 中，每个验证者都 “掷骰子”。他们执行一个函数 (VRF)，该函数将以下内容作为输入：
 
