@@ -45,14 +45,15 @@ df -h
 
 ```bash
 fdisk -l
-```
 
->Disk /dev/vdb: 200 GiB, 214748364800 bytes, 419430400 sectors
+# 显示结果
+Disk /dev/vdb: 200 GiB, 214748364800 bytes, 419430400 sectors
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
 I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disklabel type: dos
 Disk identifier: 0x331195d1
+```
 
 由上述可知，未挂载的硬盘为 `/dev/vdb`。我们将用来 `/dev/vdb` 演示，安装操作如下。
 
@@ -61,6 +62,7 @@ Disk identifier: 0x331195d1
 
 ```bash
 fdisk /dev/vdb
+
 Enter and press Enter:
 n
 p
