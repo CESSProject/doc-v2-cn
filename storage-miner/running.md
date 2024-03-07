@@ -178,8 +178,8 @@ sudo cess profile testnet
 
 ```bash
 sudo cess config set
-```
->Enter cess node mode from 'authority/storage/watcher': storage  
+
+Enter cess node mode from 'authority/storage/watcher': storage
 Enter cess storage listener port (current: 15001, press enter to skip):  
 Enter cess storage earnings account: # 输入账户以获得奖励，账户应以 "c..." 开头。  
 Enter cess storage signature phrase: # 请输入您的签名账户助记词  
@@ -190,7 +190,7 @@ Enter the number of CPU cores used for mining; Your CPU cores are 4
 Enter the staker\'s payment account if you have another one (if it is the same as the signature account,press enter to skip): # 您指定的其他质押帐户  
 Enter the reserved TEE worker endpoints (separate multiple values with commas, press enter to skip):  
 Set configurations successfully
-
+```
 
 - 如果提供了质押付款账户，对于测试网，承诺的空间（输入 **Enter cess storage space** 的答案）将 **四舍五入** 到最接近的 TB 单位，并将该数量乘以 4,000 个 TCESS 作为矿工押金进行锁定。
 - 如果未提供质押付款账户，则会要求提供另一个账户，即签名账户，并将从该账户锁定代币。
@@ -200,12 +200,12 @@ Set configurations successfully
 
 ```bash
 sudo cess start
-```
->[+] Running 3/0  
+
+[+] Running 3/0
  ✔ Container chain       Running                                                0.0s  
  ✔ Container bucket      Running                                                0.0s  
  ✔ Container watchtower  Running                                                0.0s  
-
+```
 
 如果您想加快存储矿工获取收益的速度，可以选择部署Marker型TEE Worker来帮助矿工认证空间和为服役文件打标，请参阅[TEE Worker用户指南](./teeworker.md)
 
@@ -264,8 +264,6 @@ sudo cess bucket stat
 ![CESS Bucket 统计](../assets/storage-miner/running/bucket-stat.png)
 
 上述名称的进一步解释，请参阅 [术语对照](../glossary.md#storage-miner)。
-
-At the beginning of the storage node synchronization, all your  are 0. It is only when the validated space been incremented above 0 that the storage miner start earning rewards. For testnet, it take about an hour **after** the storage node chain synchronization completed, as shown below.
 
 在存储节点同步开始时，所有您的 **validated space** (已验证空间), **used space** (已使用空间), 及 **locked space** (已锁定空间) 都为 0。只有当已验证空间增加到大于 0 时，存储矿工才开始赚取奖励。对于测试网，在存储节点链同步完成后大约需要一个小时，将开始验证存储节点空间。如下所示。
 
@@ -345,8 +343,8 @@ sudo cess purge
 ## 更新 `cess-nodeadm`
 
 ```bash
-sudo wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
-sudo tar -xvf vx.x.x.tar.gz
+wget https://github.com/CESSProject/cess-nodeadm/archive/vx.x.x.tar.gz
+tar -xvf vx.x.x.tar.gz
 cd cess-nodeadm-x.x.x
 sudo ./install.sh --skip-dep
 ```
