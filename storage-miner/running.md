@@ -29,8 +29,11 @@ Docker 安装请参考[官方文档](https://docs.docker.com/engine/install/)。
 ufw allow 4001
 ```
 
-## 硬盘分区与挂载
+## 非必要：硬盘分区与挂载
 
+{% hint style="info" %}
+如您要将另一个磁盘 / 存储设备挂载到服务器上才需要执行此步骤。
+{% endhint %}
 
 使用以下命令检查硬盘状态`df -h`：
 
@@ -44,11 +47,11 @@ df -h
 fdisk -l
 ```
 
->Disk /dev/vdb: 200 GiB, 214748364800 bytes, 419430400 sectors  
-Units: sectors of 1 * 512 = 512 bytes  
-Sector size (logical/physical): 512 bytes / 512 bytes  
-I/O size (minimum/optimal): 512 bytes / 512 bytes  
-Disklabel type: dos  
+>Disk /dev/vdb: 200 GiB, 214748364800 bytes, 419430400 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
 Disk identifier: 0x331195d1
 
 由上述可知，未挂载的硬盘为 `/dev/vdb`。我们将用来 `/dev/vdb` 演示，安装操作如下。
@@ -141,21 +144,21 @@ df -h
 
    如果安装失败，请查看 [故障排除步骤](./troubleshooting.md)。
 
-# 停止并移除已有服务
+3. 停止并移除已有服务
 
-停止已有的服务：
+   停止已有的服务：
 
-```bash
-sudo cess stop
-# 或者
-sudo cess down
-```
+   ```bash
+   sudo cess stop
+   # 或者
+   sudo cess down
+   ```
 
-移除已有的服务：
+   移除已有的服务：
 
-```bash
-sudo cess purge
-```
+   ```bash
+   sudo cess purge
+   ```
 
 # 配置 CESS 客户端
 
