@@ -1,4 +1,4 @@
-# 升级 Runtime
+# Runtime 升级
 
 无分叉升级是用于区块链开发的 Substrate 框架的一个定义性特征。在不分叉代码库的情况下更新 runtime 逻辑的能力使您的区块链能够随着时间的推移而发展和改进。通过将 runtime 执行环境 (runtime WebAssembly blob) 的定义作为区块链 runtime 状态中的一个元素，可以实现此功能。
 
@@ -29,7 +29,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 };
 ```
 
-# 无分柝升级 runtime
+# 无分叉 runtime 升级
 
 传统区块链在升级其链的状态转换功能时需要硬分叉。硬分叉要求所有节点操作员停止其节点并手动升级到最新的可执行版本。对于分布式生产网络，协调硬分叉升级可能是一个复杂的过程。
 
