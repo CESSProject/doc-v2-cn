@@ -45,7 +45,6 @@
   * [运行多 buckets 容器](storage-miner/multi-buckets.md)
   * [故障排除指南](storage-miner/troubleshooting.md)
   * [TEE Worker 运行指南](storage-miner/teeworker.md)
-  * [奖励机制](storage-miner/reward.md)
 * [🔒 角色：共识矿工](consensus-miner/README.md)
   * [运行节点](consensus-miner/running.md)
   * [奖励机制](consensus-miner/reward.md)
