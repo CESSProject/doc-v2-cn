@@ -39,19 +39,19 @@ CESSv0.7.6版本后，用户可以选择以下身份运行共识矿工：
 
 - **Verifier**：验证型节点主要处理闲置和服役随机挑战，该类型必须`绑定共识节点`进行注册；
 
-- **Marker**：认证型节点用于为用户服役文件计算Tag，处理闲置密钥生成，闲置认证和闲置替换工作，该类型可单独进行注册，服务于指定存储节点集群，***以该身份运行共识节点不增加信誉积分***；
+- **Marker**：认证型节点用于为用户服役文件计算 Tag，处理闲置密钥生成，闲置认证和闲置替换工作，该类型可单独进行注册，服务于指定存储节点集群，**以该身份运行共识节点不增加信誉积分**；
 
-以 **Full** 和 **Verifier** 运行共识矿工需要两个帐户，如果您已经拥有自己的Stash账户或想指定其他人的Stash账户，则无需进行下方的 **绑定资金** 操作。
+以 **Full** 和 **Verifier** 运行共识矿工需要两个帐户，如果您已经拥有自己的 Stash 账户或想指定其他人的 Stash 账户，则无需进行下方的 **绑定资金** 操作。
 
 - **Stash 帐户**: 需要至少从节点所有者或其他用户委托质押 3,000,000 TCESS 才能运行共识验证器。
 
 - **Controller 帐户**: 仅需一笔用于注册交易的Gas费。
 
-以 **Marker** 运行共识矿工需要一个账户, 且无需进行下方的 **绑定资金** 操作。
+   以 **Marker** 运行共识矿工需要一个账户, 且无需进行下方的 **绑定资金** 操作。
 
 - **Controller 帐户**: 仅需一笔用于注册交易的Gas费。
 
-请参阅[创建 CESS 账户](../community/cess-account.md)，及前往[CESS 水龙头](https://cess.cloud/faucet.html)获取 TCESS，或[联系我们](../introduction/contact.md)获取 TCESS 代币进行质押。
+请参阅[创建 CESS 账户](../community/cess-account.md)，及前往[CESS testnet 水龙头](https://cess.cloud/faucet.html)获取 TCESS，或[联系我们](../introduction/contact.md)获取 TCESS 代币进行质押。
 
 创建钱包帐户后，导航至[CESS 浏览器](https://testnet.cess.cloud/)。
 
@@ -62,7 +62,7 @@ CESSv0.7.6版本后，用户可以选择以下身份运行共识矿工：
 ![新增 Stash 帐户](../assets/consensus-miner/running/consensus-pic1.png)
 
 选择 **Stash Account** 。_CESS
-v0.7.6版本以后绑定资金操作移除了controller账户。_
+v0.7.6 版本以后绑定资金操作移除了controller账户。_
 
 Value bonded：至少 3,000,000 TCESS。在 _payment destination_ 选择第二个选项 **Stash Account as the reward receiving account (do not increase the amount at stake)**，即挖矿收入不会自动添加到质押中。
 
@@ -95,7 +95,7 @@ sudo ./install.sh
 
 如果安装失败，请查看[故障排除步骤](../storage-miner/troubleshooting.md)。
 
-# 配置CESS客户端
+# 配置 CESS 客户端
 
 运行:
 
@@ -109,7 +109,9 @@ sudo cess config set
 
 ```bash
 Enter cess node mode from 'authority/storage/watcher' (current: authority, press enter to skip): authority
-##当您选择authority后，将使用软件启动的方式为您机器启动Intel SGX驱动，这可能出现提示：“Software enable has been set. Please reboot your system to finish enabling Intel SGX.”请您再配置完成之后重启机器再进行接下来的步骤！
+
+## 当您选择authority后，将使用软件启动的方式为您机器启动Intel SGX驱动，这可能出现提示：“Software enable has been set. Please reboot your system to finish enabling Intel SGX.”请您再配置完成之后重启机器再进行接下来的步骤！
+
 Begin install sgx_enable ...
 Intel SGX is already enabled on this system
 Enter cess node name (current: cess, press enter to skip): cess
@@ -119,9 +121,11 @@ Start configuring the endpoint to access TEE worker from the Internet
   Try to get your external IP ...
 
 ## 此步骤会自动检测您机器IP，若自动检测不正确请您将正确的http://ip:port填入，其中port为上一步您设置的值，当然您也可以将endpoint设置为域名。
+
 Enter the TEE worker endpoint (current: http://xx.xxx.xx.xx:19999, press enter to skip):
 
-## current 为 null 代表为空，当您想成为Marker的时候可以直接回车跳过
+## current 为 null 代表为空，当您想成为 Marker 的时候可以直接回车跳过
+
 Enter cess validator stash account (current: null, press enter to skip): cXic3WhctsJ9cExmjE9vog49xaLuVbDLcFi2odeEnvV5Sbq4f
 Enter what kind of tee worker would you want to be [Full/Verifier]: Full
 Enter cess validator controller phrase: xxxxxxxxxxxxxx
@@ -344,7 +348,7 @@ cess pullimg
 
 1. 我并不想将自己的 IP 地址暴露在链上该怎么做？</br>
 
-   您可以在`cess config set`过程中设置自己endpoint的时候将域名加入，例如您注册的域名为tee-xxx.cess.cloud，那么您可以在设置endpoint的时候填入http://tee-xxx.cess.cloud，随后脚本将询问您是否一键代理域名，您可以输入`y`实现一键代理，示例如下：
+   您可以在`cess config set`过程中设置自己endpoint的时候将域名加入，例如您注册的域名为tee-xxx.cess.cloud，那么您可以在设置endpoint的时候填入 http://tee-xxx.cess.cloud ，随后脚本将询问您是否一键代理域名，您可以输入`y`实现一键代理，示例如下：
 
    ```bash
    .....
@@ -352,7 +356,8 @@ cess pullimg
    Do you need to configure a domain name proxy with one click? (y/n): y
    .....
    ```
-   当然您也可以自行配置nginx代理，请不要使用域名服务商的中间代理。
+
+   当然您也可以自行配置 nginx 代理，请不要使用域名服务商的中间代理。
 
 2. 我怎么知道程序有没有正常工作？</br>
 
