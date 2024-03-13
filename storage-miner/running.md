@@ -274,7 +274,7 @@ sudo cess bucket stat
 ## 增加质押
 
 ```bash
-sudo cess bucket increase <deposit amount>
+sudo cess bucket increase staking <deposit amount>
 ```
 
 ## 撤回质押
