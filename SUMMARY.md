@@ -40,6 +40,7 @@
     * [Substrate 与 EVM 帐户转换](developer/guides/substrate-evm.md)
     * [CESS 代码介绍](developer/guides/src-overview.md)
     * [DeOSS](https://docs.cess.cloud/deoss)
+    * [购买空间操作指南（浏览器操作）](developer/guides/user-space.md)
 * [🛡 角色：存储矿工](storage-miner/README.md)
   * [运行节点](storage-miner/running.md)
   * [运行多 buckets 容器](storage-miner/multi-buckets.md)
