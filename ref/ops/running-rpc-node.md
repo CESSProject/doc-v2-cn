@@ -49,26 +49,26 @@ RPC 节点不像共识节点那样直接参与出块工作，而是负责验证�
 2. 获取 cess-node 最新的发布版本
    [检查 cess-node 最新的版本](https://github.com/CESSProject/cess/tags)
 
-   以v0.7.5为最新版本为例，下载并解压cess-node程序：
+   以v0.7.7为最新版本为例，下载并解压cess-node程序：
 
    ```shell
-   wget https://github.com/CESSProject/cess/archive/v0.7.5.tar.gztar -zxvf v0.7.5.tar.gz
+   wget https://github.com/CESSProject/cess/archive/v0.7.7.tar.gztar -zxvf v0.7.7.tar.gz
    ```
 
 3. 编译 **cess-node**
 
    进入cess-node目录：
    ```shell
-   cd cess-0.7.5/
+   cd cess-0.7.7/
    cargo build --release
    ```
 
 4. 启动RPC服务
    ```shell
-   # 0.7.5版本以前含0.7.5版本输入：
+   # 0.7.7版本以前含0.7.7版本输入：
    ./target/release/cess-node --base-path 【您自定义数据库存放路径】 --chain cess-testnet --port 30333 --ws-port 9944 --rpc-port 9933 --unsafe-rpc-external --unsafe-ws-external --name 【您自定义的名字】 --rpc-cors all --ws-max-connections 2020 --state-pruning archive
 
-   #0.7.5版本以后输入：
+   #0.7.7版本以后输入：
    ./target/release/cess-node --base-path 【您自定义数据库存放路径】 --chain cess-testnet --port 30333 --rpc-port 9944 --unsafe-rpc-external --name 【您自定义的名字】 --rpc-cors all --rpc-max-connections 2020 --state-pruning archive
    ```
 
