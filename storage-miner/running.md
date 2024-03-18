@@ -163,7 +163,7 @@ sudo cess purge
 
 ```bash
 # 切换到CESS开发网：
-sudo cess profile devtnet
+sudo cess profile devnet
 
 # 或 切换到CESS测试网：
 sudo cess profile testnet
