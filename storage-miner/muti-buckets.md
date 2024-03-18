@@ -1,4 +1,138 @@
-# 1. 准备 RPC 节点
+# Architecture
+
+多存储节点架构如下所示:
+
+![folder structure](../assets/storage-miner/multi-buckets/multibucket.png)
+
+# 一键安装多个存储节点
+
+## 1. 下载并安装 multibucket 管理客户端
+
+```bash
+sudo wget https://github.com/CESSProject/cess-multibucket-admin/archive/v0.0.1.tar.gz
+sudo tar -xvf v0.0.1.tar.gz
+cd cess-multibucket-admin-0.0.1
+sudo bash ./install.sh
+```
+
+## 2. 自定义配置文件
+
+成功执行 `sudo bash ./install.sh` 后, 默认的配置文件生成在: `/opt/cess/multibucket-admin/config.yaml`
+
+   ```yaml
+   ## node configurations template
+   node:
+      ## the mode of node: multibucket
+      mode: "multibucket"
+      ## the profile of node: devnet/testnet/mainnet
+      profile: "testnet"
+      # default chain/rpcnode url for bucket, this config will be overwritten in buckets[] as below
+      chainWsUrl: "ws://127.0.0.1:9944/"
+      # default backup chain/rpcnode urls for bucket, this config will be overwritten in buckets[] as below
+      backupChainWsUrls: ["wss://testnet-rpc0.cess.cloud/ws/", "wss://testnet-rpc1.cess.cloud/ws/", "wss://testnet-rpc2.cess.cloud/ws/"]
+
+   ## chain/rpcnode configurations
+   ## set option: '--skip-rpcnode' or '-s' to skip installing rpcnode
+   ## if set option: --skip-rpcnode, please set official rpcnode in bucket[].rpcNodeWsUrl
+   rpcnode:
+      ## the name of chain/rpcnode node
+      name: "cess"
+      ## the port of chain/rpcnode node
+      port: 30336
+      ## listen rpc service at port 9944
+      rpcPort: 9944
+
+   ## bucket configurations  (multi storage miner mode)
+   buckets:
+      - name: "bucket_1"
+        # P2P communication port
+        port: 15001
+        # Maximum space used, the unit is GiB
+        UseSpace: 1000
+        # Number of cpu's used, 0 means use all
+        UseCpu: 2
+        # earnings account
+        earningsAcc: "cXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        # Staking account
+        # If you fill in the staking account, the staking will be paid by the staking account,
+        # otherwise the staking will be paid by the earningsAcc.
+        stakingAcc: "cXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        # Signature account mnemonic
+        # each bucket's mnemonic should be different
+        mnemonic: "aaaaa bbbbb ccccc ddddd eeeee fffff ggggg hhhhh iiiii jjjjj kkkkk lllll"
+        # a directory mount with filesystem
+        diskPath: "/mnt/cess_storage1"
+        # The rpc endpoint of the rpcnode
+        # `official rpcnode: wss://testnet-rpc0.cess.cloud/ws/ wss://testnet-rpc1.cess.cloud/ws/ wss://testnet-rpc2.cess.cloud/ws/`
+        rpcNodeWsUrl: "ws://127.0.0.1:9944/"
+        backupRpcNodeWsUrls: []
+        # Priority tee list address
+        TeeList:
+           - "127.0.0.1:8080"
+           - "127.0.0.1:8081"
+        # Bootstrap Nodes
+        Boot: "_dnsaddr.boot-bucket-testnet.cess.cloud"
+        
+      - name: "bucket_2"
+        # P2P communication port
+        port: 15002
+        # Maximum space used, the unit is GiB
+        UseSpace: 1000
+        # Number of cpu's used
+        UseCpu: 2
+        # earnings account
+        earningsAcc: "cXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        # Staking account
+        # If you fill in the staking account, the staking will be paid by the staking account,
+        # otherwise the staking will be paid by the earningsAcc.
+        stakingAcc: "cXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        # Signature account mnemonic
+        # each bucket's mnemonic should be different
+        mnemonic: "lllll kkkkk jjjjj iiiii hhhhh ggggg fffff eeeee ddddd ccccc bbbbb aaaaa"
+        # a directory mount with filesystem
+        diskPath: "/mnt/cess_storage2"
+        # The rpc endpoint of the rpcnode
+        # `official rpcnode: wss://testnet-rpc0.cess.cloud/ws/ wss://testnet-rpc1.cess.cloud/ws/ wss://testnet-rpc2.cess.cloud/ws/`
+        rpcNodeWsUrl: "ws://127.0.0.1:9944/"
+        backupRpcNodeWsUrls: [ ]
+        # Priority tee list address
+        TeeList:
+           - "127.0.0.1:8080"
+           - "127.0.0.1:8081"
+        # Bootstrap Nodes
+        Boot: "_dnsaddr.boot-bucket-testnet.cess.cloud"
+
+   ```
+
+## 3. 生成配置文件并一键安装多个存储节点
+
+- 每一个存储节点的配置文件会生成在其对应挂载路径的 `bucket` 目录下
+- docker-compose.yaml 生成在路径： `/opt/cess/multibucket-admin/build/docker-compose.yaml`
+
+  ```bash
+  sudo cess-multibucket-admin config generate && sudo cess-multibucket-admin install
+  ```
+
+## 4. 卸载
+
+停止某个服务
+```bash
+  sudo cess-multibucket-admin stop $1
+```
+
+停止所有服务
+```bash
+  sudo cess-multibucket-admin stop
+```
+
+停止所有服务并删除相关镜像
+```bash
+  sudo cess-multibucket-admin down
+```
+
+# 依次安装多个存储节点
+
+## 1. 准备 RPC 节点
 
 您可以在自己的机器中运行自己的 RPC 节点，或者使用 CESS 官方提供的 RPC 节点。
 
@@ -10,12 +144,12 @@
 
 如果您想运行自己的 RPC 节点，有两种方法：一是通过 cess-nodeadm 程序启动，二是直接运行 cess-node 程序。下面分别介绍了这两种运行方法。
 
-## 通过 cess-nodeadm 程序运行 RPC 节点
+### 通过 cess-nodeadm 程序运行 RPC 节点
 
 1. 检查 cess-nodeadm 最新的版本
    cesss-nodeadm最新版本号位置：<https://github.com/CESSProject/cess-nodeadm/tags>
 
-   ⚠️本小节下文中所有的x.x.x用最新的版本号代替，例如最新的版本号是v0.5.3，则x.x.x用0.5.3代替。
+   ⚠️本小节下文中所有的x.x.x用最新的版本号代替，例如最新的版本号是v0.5.5，则x.x.x用0.5.5代替。
 
 2. 检查已安装的 cess-nodeadm 版本
    在控制台中输入 `cess version` 命令，检查 `nodeadm version` 版本是否是最新的版本。
@@ -56,7 +190,7 @@
    docker logs chain
    ```
 
-## 直接运行 cess-node 程序
+### 直接运行 cess-node 程序
 
 1. 安装rust环境
    [参考 Substrate 官方教程](https://docs.substrate.io/install/)
@@ -64,28 +198,28 @@
 2. 获取 cess-node 最新的发布版本
    [检查 cess-node 最新的版本](https://github.com/CESSProject/cess/tags)
 
-   以v0.7.5为最新版本为例，下载并解压cess-node程序：
+   以v0.7.7为最新版本为例，下载并解压cess-node程序：
 
    ```bash
-   wget https://github.com/CESSProject/cess/archive/v0.7.5.tar.gz
-   tar -zxvf v0.7.5.tar.gz
+   wget https://github.com/CESSProject/cess/archive/v0.7.7.tar.gz
+   tar -zxvf v0.7.7.tar.gz
    ```
 
 3. 编译cess-node程序
    进入cess-node目录：
 
    ```bash
-   cd cess-0.7.5/
+   cd cess-0.7.7/
    cargo build --release
    ```
 
 4. 启动RPC服务
 
    ```bash
-   # 0.7.5版本以前含0.7.5版本输入：
+   # 0.7.7版本以前含0.7.7版本输入：
    ./target/release/cess-node --base-path 【您自定义数据库存放路径】 --chain cess-testnet --port 30333 --ws-port 9944 --rpc-port 9933 --unsafe-rpc-external --unsafe-ws-external --name 【您自定义的名字】 --rpc-cors all --ws-max-connections 2020 --state-pruning archive
 
-   #0.7.5版本以后输入：
+   #0.7.7版本以后输入：
    ./target/release/cess-node --base-path 【您自定义数据库存放路径】 --chain cess-testnet --port 30333 --rpc-port 9944 --unsafe-rpc-external --name 【您自定义的名字】 --rpc-cors all --rpc-max-connections 2020 --state-pruning archive
    ```
 
@@ -93,7 +227,7 @@
 
    ⚠️您需要保持cess-node程序一直运行，建议使用 [**screen**](https://linuxize.com/post/how-to-use-linux-screen/) 或 [**tmux**](https://linuxize.com/post/getting-started-with-tmux/) 命令为 cess-node 开启独立的窗口。
 
-# 2. 安装 Docker 和 Docker Compose
+## 2. 安装 Docker 和 Docker Compose
 
 以 Ubuntu（官方推荐存储节点操作系统）为例安装 docker.
 
@@ -136,7 +270,7 @@
    sudo usermod -aG docker $USER
    ```
 
-# 3. 配置存储节点信息
+## 3. 配置存储节点信息
 
 1. 为每个存储节点创建工作目录（以运行两个存储节点为例，两个存储程序的数据目录分别位于 `/mnt/disk0` 和 `/mnt/disk1`，您可以修改为自己的目录。）:
 
@@ -191,7 +325,7 @@
 
    ![配置结构](../assets/storage-miner/multi-buckets/folder.png)
 
-# 4. 配置并启动存储节点容器
+## 4. 配置并启动存储节点容器
 
 请根据以下内容创建 `docker-compose.yaml` 文件，用于批量启动存储节点容器：
 
