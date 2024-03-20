@@ -2,7 +2,7 @@
 
 多存储节点架构如下所示:
 
-![folder structure](../assets/storage-miner/multi-buckets/multibucket.png)
+![多存储节点架构](../assets/storage-miner/multi-buckets/multibucket.png)
 
 # 一键安装多个存储节点
 
