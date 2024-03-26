@@ -1,6 +1,9 @@
 # Architecture
 
 多存储节点架构如下所示:
+- watchTower: 当本地的 bucket 镜像与官方的 bucket 镜像有差异时，watchtower会自动拉取官方的新镜像，在创建一个新的 bucket 容器后删除旧的 bucket 容器
+- bucket: 存储节点，多个存储节点之间会进行 P2P 通信，在示例配置文件中配置的通信端口为：15001、15002
+- chain: 链节点，存储节点默认通过链节点的 9944 端口获取区块信息；链节点之间默认通过 30336 端口进行数据同步
 
 ![多存储节点架构](../assets/storage-miner/multi-buckets/multibucket.png)
 
@@ -22,13 +25,17 @@ sudo bash ./install.sh
 
 - UseSpace: 存储节点的存储能力，单位为 GB
 - UseCpu: 存储节点使用的逻辑核心数
-- earningsAcc: 收入账户， [如何获取账户和注记词](https://docs.cess.cloud/core/v/zh/storage-miner/running#zhun-bei-cess-zhang-hu)
-- stakingAcc: 质押 TCESS 的付款账户，每提供 1T 的存储空间需要质押 4000 个 TCESS
-- mnemonic: 账户注记词，由 12 个单词组成，每个存储节点需要提供不同的注记词
+- port: 存储节点 P2P 通信端口，每个存储节点的端口必须不同且没有被其他服务占用
 - diskPath: 存储节点工作的系统绝对路径，需要在该路径下挂载文件系统
+- earningsAcc: 收入账户， [如何获取账户和助记词](https://docs.cess.cloud/core/v/zh/storage-miner/running#zhun-bei-cess-zhang-hu)
+- stakingAcc: 质押 TCESS 的付款账户，每提供 1T 的存储空间需要质押 4000 个 TCESS
+- mnemonic: 账户助记词，由 12 个单词组成，每个存储节点需要提供不同的助记词
 - chainWsUrl: 默认通过本地的 RPC 节点进行存储节点之间的数据同步，`buckets[].chainWsUrl` 的优先级高于 `node.chainWsUrl`
-- backupChainWsUrls: 备用 RPC 节点，可以使用官方提供的 RPC 节点或者其他你所知的其他 RPC 节点，`buckets[].backupChainWsUrls` 的优先级高于 `node.backupChainWsUrls`
+- backupChainWsUrls: 备用 RPC 节点，可以使用官方提供的 RPC 节点或者你所知的其他 RPC 节点，`buckets[].backupChainWsUrls` 的优先级高于 `node.backupChainWsUrls`
 
+{% hint style="warning" %}
+你可以通过 lvm 的方式在一块硬盘上创建多个虚拟逻辑卷，将多个虚拟逻辑卷挂载在不同的 diskPath 上，但当该硬盘损坏时，所有依赖 lvm 的存储节点都出现故障 !
+{% endhint %}
 
    ```yaml
    ## node configurations template
@@ -143,21 +150,97 @@ sudo bash ./install.sh
   sudo cess-multibucket-admin install --skip-chain
   ```
 
-## 5. 卸载
+## 5. 常用操作
 
-停止某个服务，如 `sudo cess-multibucket-admin stop bucket_1` 停止存储节点：`bucket_1`
+**停止某个服务**，如 `sudo cess-multibucket-admin stop bucket_1` 停止存储节点：`bucket_1`
 ```bash
   sudo cess-multibucket-admin stop $1
 ```
 
-停止所有服务
+**停止所有服务**
 ```bash
   sudo cess-multibucket-admin stop
 ```
 
-停止所有服务并删除相关镜像
+**停止所有服务并删除相关镜像**
 ```bash
   sudo cess-multibucket-admin down
+```
+
+**重启所有服务**
+```bash
+  sudo cess-multibucket-admin restart
+```
+
+**重启某个服务**，如 `sudo cess-multibucket-admin reload bucket_1` 重新运行存储节点：`bucket_1`
+```bash
+  sudo cess-multibucket-admin restart $1
+```
+
+**查看版本相关信息**
+```bash
+  sudo cess-multibucket-admin version
+```
+
+**查看服务状态**
+```bash
+  sudo cess-multibucket-admin status
+```
+
+**重新拉取镜像**
+```bash
+  sudo cess-multibucket-admin pullimg
+```
+
+**查看当前磁盘使用情况**
+```bash
+  sudo cess-multibucket-admin tools space-info
+```
+
+**查看存储桶状态**
+```bash
+  sudo cess-multibucket-admin buckets stat
+```
+
+**增加质押**
+```bash
+  sudo cess-multibucket-admin buckets increase staking <deposit amount>
+```
+
+**撤回质押**
+
+当您的节点**退出 CESS 网络**（见下文）后，运行以下命令撤回质押：
+```bash
+  sudo cess-multibucket-admin buckets withdraw
+```
+
+**查询奖励信息**
+```bash
+  udo cess-multibucket-admin buckets reward
+```
+
+**领取奖励**
+```bash
+  sudo cess-multibucket-admin buckets claim
+```
+
+**更新收入账户**
+```bash
+  sudo cess-multibucket-admin buckets update earnings [earnings account]
+```
+
+**退出 CESS 网络**
+```bash
+  sudo cess-multibucket-admin buckets exit
+```
+
+**移除现有的服务**
+
+{% hint style="warning" %}
+除非 CESS 网络已重新部署且确认数据可以清除，否则请勿执行此操作。
+{% endhint %}
+```bash
+  sudo cess-multibucket-admin purge
 ```
 
 # 方法二：依次安装多个存储节点
